@@ -358,14 +358,6 @@ export default function App() {
     return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
   };
 
-  const handleOpenYoutube = (url) => {
-    if (!url) return;
-    const onay = window.confirm("YouTube'a gitmek istiyor musunuz?");
-    if (onay) {
-      window.open(url, '_blank');
-    }
-  };
-
   const calculateDuration = (start, end) => {
     if (!start || !end) return '';
     const [startH, startM] = start.split(':').map(Number);
@@ -419,10 +411,6 @@ export default function App() {
     setFormYtUrl('');
     setFormBook('');
     setFormQuestions('');
-  };
-
-  const toggleItemStatus = (id, newStatus) => {
-    setSchedule(schedule.map(item => item.id === id ? { ...item, status: newStatus } : item));
   };
 
   const removeScheduleItem = (id) => {
@@ -492,26 +480,15 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
 
-  // ARKA PLAN SESLERİ VE BİTİŞ SESİ STATE'LERİ (Bahsettiğiniz fırtına ve piyano sesleri buraya eklendi)
-  const [selectedSound, setSelectedSound] = useState('none');
   const [selectedEndSound, setSelectedEndSound] = useState('bell');
 
-  // Seslerin YouTube ID'leri (Fırtına ve Piyano atmosferi için güncellendi)
-  const soundVideoIds = {
-    rain: 'mPZkdNFkNps',   // Yağmur Sesi
-    fire: 'L_LUpnjgPso',   // Şömine Sesi
-    study: '5qap5aO4i9A',  // Deneme Ortamı
-    piano: '4o0Xo_9QWro',  // Piyano Müziği
-    storm: '0WqD9yPww_8'   // Fırtına ve Gök Gürültüsü Sesi
-  };
-
-  // Etüt bittiğinde çalacak ses fonksiyonu
-  const playEndSound = () => {
+  // Belirli bir ses türünü test amaçlı çalan fonksiyon
+  const playSpecificSound = (soundType) => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const now = audioCtx.currentTime;
 
-      if (selectedEndSound === 'bell') {
+      if (soundType === 'bell') {
         [523.25, 659.25, 783.99].forEach((freq, index) => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
@@ -525,7 +502,7 @@ export default function App() {
           osc.start(now + index * 0.12);
           osc.stop(now + index * 0.12 + 0.9);
         });
-      } else if (selectedEndSound === 'digital') {
+      } else if (soundType === 'digital') {
         [880, 880].forEach((freq, index) => {
           const osc = audioCtx.createOscillator();
           const gain = audioCtx.createGain();
@@ -538,7 +515,7 @@ export default function App() {
           osc.start(now + index * 0.2);
           osc.stop(now + index * 0.2 + 0.2);
         });
-      } else if (selectedEndSound === 'gong') {
+      } else if (soundType === 'gong') {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'triangle';
@@ -553,12 +530,18 @@ export default function App() {
     } catch (e) {}
   };
 
+  const handleEndSoundChange = (e) => {
+    const newSound = e.target.value;
+    setSelectedEndSound(newSound);
+    playSpecificSound(newSound); // Seçildiği anda kullanıcı duysun diye test sesi çalıyoruz
+  };
+
   useEffect(() => {
     let timer = null;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
     } else if (timeLeft === 0) {
-      playEndSound();
+      playSpecificSound(selectedEndSound);
 
       if (pomodoroMode === 'work') {
         if (currentBlock < targetBlocks) {
@@ -607,17 +590,6 @@ export default function App() {
 
   return (
     <div className={`min-h-screen ${currentTheme.bg} ${isLight ? 'text-slate-900' : 'text-white'} p-3 md:p-6 font-sans transition-colors duration-300 relative`}>
-
-      {/* ARKA PLAN SESİ: SADECE ETÜT DEVAM EDERKEN (isRunning === true) VE MOD ÇALIŞMAYKEN ÇALAR */}
-      {isRunning && pomodoroMode === 'work' && selectedSound !== 'none' && soundVideoIds[selectedSound] && (
-        <div className="hidden">
-          <iframe
-            src={`https://www.youtube.com/embed/${soundVideoIds[selectedSound]}?autoplay=1&loop=1&playlist=${soundVideoIds[selectedSound]}`}
-            allow="autoplay"
-            title="Arka Plan Sesi"
-          />
-        </div>
-      )}
 
       <div className="max-w-7xl mx-auto space-y-6">
 
@@ -830,7 +802,7 @@ export default function App() {
           </div>
         )}
 
-        {/* 3. POMODORO / BLOK TABI (Fırtına ve piyano sesleri burada seçilebilir) */}
+        {/* 3. POMODORO / BLOK TABI */}
         {activeTab === 'pomodoro' && (
           <div className="space-y-6 max-w-2xl mx-auto">
             <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} text-center space-y-6 shadow-xl`}>
@@ -860,33 +832,17 @@ export default function App() {
               </div>
 
               <div className="border-t border-slate-700/60 pt-4 space-y-3 text-left">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400">🎵 Çalışma Arkadaşı Arka Plan Sesi</h4>
-                <select
-                  value={selectedSound}
-                  onChange={(e) => setSelectedSound(e.target.value)}
-                  className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs font-bold`}
-                >
-                  <option value="none">Ses Yok (Sessiz)</option>
-                  <option value="storm">⛈️ Fırtına ve Gök Gürültüsü (Söylediğiniz Atmosfer)</option>
-                  <option value="piano">🎹 Piyano Müziği</option>
-                  <option value="rain">🌧️ Hafif Yağmur Sesi</option>
-                  <option value="fire">🔥 Şömine Sesi</option>
-                  <option value="study">☕ Çalışma Ortamı (Cafe)</option>
-                </select>
-                <p className="text-[10px] text-slate-400">Not: Seçtiğiniz arka plan sesi sadece etüt sayacı çalışırken otomatik başlar.</p>
-              </div>
-
-              <div className="border-t border-slate-700/60 pt-4 space-y-3 text-left">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400">🔔 Etüt/Mola Bitiş Sesi</h4>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400">🔔 Etüt/Mola Bitiş Sesi (Seçerken Test Edebilirsiniz)</h4>
                 <select
                   value={selectedEndSound}
-                  onChange={(e) => setSelectedEndSound(e.target.value)}
+                  onChange={handleEndSoundChange}
                   className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs font-bold`}
                 >
                   <option value="bell">Yumuşak Zil Sesi (Chime)</option>
                   <option value="digital">Dijital Alarm</option>
                   <option value="gong">Zen Gong Sesi</option>
                 </select>
+                <p className="text-[10px] text-slate-400">Açılır menüden bir ses seçtiğinizde, sesin nasıl çıktığını duymanız için anında çalacaktır.</p>
               </div>
 
               <div className="border-t border-slate-700/60 pt-4 grid grid-cols-3 gap-2 text-xs">
