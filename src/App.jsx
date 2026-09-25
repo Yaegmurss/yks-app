@@ -306,6 +306,13 @@ export default function App() {
     <div className={`min-h-screen ${bgColor} text-white p-3 md:p-6 font-sans transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto space-y-6">
 
+        {/* 🌟 By Yağmur İmzası (En Üstte) */}
+        <div className="text-right px-2">
+          <span className="italic text-xs text-indigo-400 font-medium tracking-wide">
+            By Yağmur
+          </span>
+        </div>
+
         {/* Üst Menü */}
         <header className="bg-slate-800/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
