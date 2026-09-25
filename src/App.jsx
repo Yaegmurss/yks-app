@@ -492,41 +492,63 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
 
-  // ARKA PLAN SESLERİ İÇİN GİZLİ YOUTUBE OYNATICI STATE'LERİ
+  // ARKA PLAN SESLERİ VE BİTİŞ SESİ STATE'LERİ
   const [selectedSound, setSelectedSound] = useState('none');
-  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+  const [selectedEndSound, setSelectedEndSound] = useState('bell'); // Kullanıcının seçebileceği bitiş sesi
 
-  // Seslerin YouTube Video ID'leri (Uygulama içinde çalması için)
+  // Seslerin YouTube ID'leri
   const soundVideoIds = {
-    study: '5qap5aO4i9A', // Kütüphane / Çalışma Ortamı Atmosferi
     rain: 'mPZkdNFkNps',   // Yağmur Sesi
     fire: 'L_LUpnjgPso',   // Şömine Sesi
-    birds: 'V_VPg993F40',  // Kuş ve Doğa Sesleri
-    lofi: 'jfKfPfyJRdk'    // Hafif Lofi Müzik
+    study: '5qap5aO4i9A',  // Deneme Ortamı
+    piano: '4o0Xo_9QWro'   // Piyano
   };
 
-  const playNiceBellSound = () => {
+  // Etüt bittiğinde çalacak ses fonksiyonu (kullanıcının seçimine göre)
+  const playEndSound = () => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const now = audioCtx.currentTime;
 
-      [523.25, 659.25, 783.99].forEach((freq, index) => {
+      if (selectedEndSound === 'bell') {
+        [523.25, 659.25, 783.99].forEach((freq, index) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + index * 0.12);
+          gain.gain.setValueAtTime(0, now + index * 0.12);
+          gain.gain.linearRampToValueAtTime(0.3, now + index * 0.12 + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.12 + 0.8);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + index * 0.12);
+          osc.stop(now + index * 0.12 + 0.9);
+        });
+      } else if (selectedEndSound === 'digital') {
+        [880, 880].forEach((freq, index) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(freq, now + index * 0.2);
+          gain.gain.setValueAtTime(0.2, now + index * 0.2);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.2 + 0.15);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + index * 0.2);
+          osc.stop(now + index * 0.2 + 0.2);
+        });
+      } else if (selectedEndSound === 'gong') {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + index * 0.12);
-
-        gain.gain.setValueAtTime(0, now + index * 0.12);
-        gain.gain.linearRampToValueAtTime(0.3, now + index * 0.12 + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.12 + 0.8);
-
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(150, now);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
-
-        osc.start(now + index * 0.12);
-        osc.stop(now + index * 0.12 + 0.9);
-      });
+        osc.start(now);
+        osc.stop(now + 1.5);
+      }
     } catch (e) {}
   };
 
@@ -535,7 +557,7 @@ export default function App() {
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
     } else if (timeLeft === 0) {
-      playNiceBellSound();
+      playEndSound();
 
       if (pomodoroMode === 'work') {
         if (currentBlock < targetBlocks) {
@@ -557,7 +579,7 @@ export default function App() {
       }
     }
     return () => clearInterval(timer);
-  }, [isRunning, timeLeft, pomodoroMode, currentBlock, targetBlocks, customWorkTime, customBreakTime]);
+  }, [isRunning, timeLeft, pomodoroMode, currentBlock, targetBlocks, customWorkTime, customBreakTime, selectedEndSound]);
 
   const applyCustomPomodoro = (workMins, breakMins, blocks = targetBlocks) => {
     const w = Math.max(1, parseInt(workMins) || 1);
@@ -585,8 +607,8 @@ export default function App() {
   return (
     <div className={`min-h-screen ${currentTheme.bg} ${isLight ? 'text-slate-900' : 'text-white'} p-3 md:p-6 font-sans transition-colors duration-300 relative`}>
 
-      {/* ARKA PLANDA SES ÇALAN GİZLİ YOUTUBE OYNATICI */}
-      {isSoundPlaying && selectedSound !== 'none' && soundVideoIds[selectedSound] && (
+      {/* ARKA PLAN SESİ: SADECE ETÜT DEVAM EDERKEN (isRunning === true) VE MOD ÇALIŞMAYKEN ÇALAR */}
+      {isRunning && pomodoroMode === 'work' && selectedSound !== 'none' && soundVideoIds[selectedSound] && (
         <div className="hidden">
           <iframe
             src={`https://www.youtube.com/embed/${soundVideoIds[selectedSound]}?autoplay=1&loop=1&playlist=${soundVideoIds[selectedSound]}`}
@@ -874,37 +896,34 @@ export default function App() {
                   <button onClick={() => applyCustomPomodoro(40, 10, 3)} className="px-3 py-1 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-lg text-[11px] font-bold">🚀 3 Blok Maraton</button>
                 </div>
 
-                {/* ARKA PLAN SESLERİ SEÇİM BÖLÜMÜ */}
-                <div className="pt-3 border-t border-slate-700/50 space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>🎧 Etüt Arka Plan Sesi</span>
-                    <button
-                      onClick={() => setIsSoundPlaying(!isSoundPlaying)}
-                      disabled={selectedSound === 'none'}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold ${selectedSound === 'none' ? 'opacity-50 cursor-not-allowed bg-slate-700 text-slate-400' : isSoundPlaying ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'}`}
+                {/* YENİ EKLENEN: ARKA PLAN VE BİTİŞ SESİ KUTUCUKLARI */}
+                <div className="pt-3 border-t border-slate-700/50 space-y-3">
+                  <div>
+                    <span className={`text-[11px] font-bold ${currentTheme.text} uppercase tracking-wider block mb-2`}>🎧 Etüt Arka Plan Sesi (Sadece Etüt Çalışırken Çalar)</span>
+                    <select
+                      value={selectedSound}
+                      onChange={(e) => setSelectedSound(e.target.value)}
+                      className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 text-xs font-bold`}
                     >
-                      {isSoundPlaying ? 'Sesi Kapat 🔇' : 'Sesi Aç 🔊'}
-                    </button>
+                      <option value="none">🔇 Ses Yok (Sessiz)</option>
+                      <option value="rain">🌧️ Yağmur Sesi</option>
+                      <option value="fire">🔥 Şömine Sesi</option>
+                      <option value="study">🏛️ Deneme Ortamı</option>
+                      <option value="piano">🎹 Piyano</option>
+                    </select>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
-                    {[
-                      { id: 'none', label: 'Ses Yok', icon: '🔇' },
-                      { id: 'study', label: 'Deneme Ortamı', icon: '🏛️' },
-                      { id: 'rain', label: 'Yağmur Sesi', icon: '🌧️' },
-                      { id: 'fire', label: 'Şömine Sesi', icon: '🔥' },
-                      { id: 'birds', label: 'Kuş Sesleri', icon: '🐦' },
-                      { id: 'lofi', label: 'Hafif Müzik', icon: '🎶' }
-                    ].map((sound) => (
-                      <button
-                        key={sound.id}
-                        onClick={() => { setSelectedSound(sound.id); setIsSoundPlaying(sound.id !== 'none'); }}
-                        className={`p-2 rounded-lg border text-left font-medium transition-all flex items-center gap-2 ${selectedSound === sound.id ? 'bg-indigo-600 text-white border-indigo-500 shadow-md' : `${isLight ? 'bg-white hover:bg-slate-100 text-slate-800' : 'bg-slate-900 hover:bg-slate-800 text-slate-300'} ${currentTheme.border}`}`}
-                      >
-                        <span>{sound.icon}</span>
-                        <span className="truncate">{sound.label}</span>
-                      </button>
-                    ))}
+                  <div>
+                    <span className={`text-[11px] font-bold ${currentTheme.text} uppercase tracking-wider block mb-2`}>🔔 Etüt Bitiş Bildirim Sesi Seçimi</span>
+                    <select
+                      value={selectedEndSound}
+                      onChange={(e) => setSelectedEndSound(e.target.value)}
+                      className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 text-xs font-bold`}
+                    >
+                      <option value="bell">Kibar Zil Sesi (Melodik)</option>
+                      <option value="digital">Dijital Alarm Sesi</option>
+                      <option value="gong">Derin Gong Sesi</option>
+                    </select>
                   </div>
                 </div>
 
