@@ -484,22 +484,24 @@ export default function App() {
     let timer = null;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
-    } else if (timeLeft === 0) {
+    } else if (isRunning && timeLeft === 0) {
       playSpecificSound(selectedEndSound);
 
       if (pomodoroMode === 'work') {
-        if (currentBlock < targetBlocks) {
-          alert(`Etüt ${currentBlock} bitti! Mola zamanı. ☕`);
-          setPomodoroMode('break');
-          setTimeLeft(customBreakTime * 60);
-        } else {
+        // Çalışma süresi doldu. Eğer son bloksa seriyi bitir, değilse molaya geç.
+        if (currentBlock >= targetBlocks) {
           alert(`Tebrikler! ${targetBlocks} blokluk çalışma serisini tamamladın! 🎉`);
           setIsRunning(false);
           setPomodoroMode('work');
           setCurrentBlock(1);
           setTimeLeft(customWorkTime * 60);
+        } else {
+          alert(`Etüt ${currentBlock} bitti! Mola zamanı. ☕`);
+          setPomodoroMode('break');
+          setTimeLeft(customBreakTime * 60);
         }
       } else {
+        // Mola bitti, bir sonraki çalışma bloğuna geç
         alert(`Mola bitti! ${currentBlock + 1}. Blok Etüt Başlıyor. 💪`);
         setCurrentBlock(prev => prev + 1);
         setPomodoroMode('work');
