@@ -1,264 +1,137 @@
-<button onClick={() => toggleItemStatus(item.id, item.status === 'success' ? 'pending' : 'success')} className={`px-3 py-1.5 rounded-xl font-bold ${item.status === 'success' ? 'bg-emerald-600 text-white' : `${isLight ? 'bg-slate-200 text-slate-700 hover:bg-slate-300' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}`}>
-                              {item.status === 'success' ? '✅ Tamamlandı' : 'Çalışılmadı'}
-                            </button>
-                            <button onClick={() => removeScheduleItem(item.id)} className="bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white px-2.5 py-1.5 rounded-xl transition-colors">🗑️</button>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-          </div>
-        )}
+import React, { useState, useEffect } from 'react';
 
-        {/* 2. DENEME ANALİZİ TABI */}
-        {activeTab === 'deneme' && (
-          <div className="space-y-6">
-            <div className={`${currentTheme.card} p-4 rounded-2xl border ${currentTheme.border} space-y-4`}>
-              <h3 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>📈 Yeni Deneme Neti Hesapla ve Kaydet</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className={`block text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'} font-bold mb-1`}>Deneme Türü</label>
-                  <select value={denemeType} onChange={(e) => setDenemeType(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 font-bold`}>
-                    <option value="TYT">TYT Denemesi</option>
-                    <option value="AYT">AYT Denemesi</option>
-                  </select>
-                </div>
-                <div>
-                  <label className={`block text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'} font-bold mb-1`}>Deneme Adı / Yayın</label>
-                  <input type="text" placeholder="Örn: 3D Yayınları TYT 1" value={denemeTitle} onChange={(e) => setDenemeTitle(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`} />
-                </div>
-              </div>
+const INITIAL_TEACHERS = [
+  'Mert Hoca (Matematik)', 'Rehber Matematik', 'Eyüp B. (Matematik)', 'Tunç Kurt (Matematik)',
+  'VIP Fizik', 'Özcan Aykın (Fizik)', 'Umut Öncül (Fizik)',
+  'Görkem Şahin (Kimya)', 'Ferrum Kimya', 'Kimya Özel',
+  'Dr. Biyoloji', 'Selin Hoca (Biyoloji)', 'BiyoSem',
+  'Kadir Gümüş (Türkçe/Edebiyat)', 'Rüştü Hoca (Türkçe)',
+  'Ramazan Yetgin (Tarih)', 'Coğrafyanın Kodları'
+];
 
-              {/* Ders Net Girişleri */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-                {/* 1. Ders */}
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold text-indigo-400 block">{denemeType === 'TYT' ? 'Türkçe' : 'Matematik'}</span>
-                  <div className="flex gap-2">
-                    <input type="number" placeholder="Doğru" value={scores.d1} onChange={(e) => setScores({ ...scores, d1: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                    <input type="number" placeholder="Yanlış" value={scores.y1} onChange={(e) => setScores({ ...scores, y1: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                  </div>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} block text-right font-mono`}>Net: {calcNet(scores.d1, scores.y1).toFixed(2)}</span>
-                </div>
+const INITIAL_BOOKS = [
+  '3D Yayınları', 'Bilgi Sarmal', 'Apotemi', 'Orijinal Yayınları', 'Palme Yayınları',
+  'Karekök Yayınları', 'Aydın Yayınları', 'Paraf Yayınları', 'Hız ve Renk', 'Limit Yayınları'
+];
 
-                {/* 2. Ders */}
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold text-sky-400 block">{denemeType === 'TYT' ? 'Sosyal Bilimler' : 'Fen Bilimleri'}</span>
-                  <div className="flex gap-2">
-                    <input type="number" placeholder="Doğru" value={scores.d2} onChange={(e) => setScores({ ...scores, d2: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                    <input type="number" placeholder="Yanlış" value={scores.y2} onChange={(e) => setScores({ ...scores, y2: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                  </div>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} block text-right font-mono`}>Net: {calcNet(scores.d2, scores.y2).toFixed(2)}</span>
-                </div>
+const MONTHS = [
+  'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+  'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+];
 
-                {/* 3. Ders */}
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold text-purple-400 block">{denemeType === 'TYT' ? 'Temel Matematik' : 'Türk Dili ve Ed. / Sos-1'}</span>
-                  <div className="flex gap-2">
-                    <input type="number" placeholder="Doğru" value={scores.d3} onChange={(e) => setScores({ ...scores, d3: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                    <input type="number" placeholder="Yanlış" value={scores.y3} onChange={(e) => setScores({ ...scores, y3: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                  </div>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} block text-right font-mono`}>Net: {calcNet(scores.d3, scores.y3).toFixed(2)}</span>
-                </div>
+const THEMES = [
+  {
+    name: 'Klasik Koyu (Slate)',
+    bg: 'bg-slate-900',
+    card: 'bg-slate-800/95',
+    subCard: 'bg-slate-900/90',
+    border: 'border-slate-700',
+    text: 'text-indigo-400'
+  },
+  {
+    name: 'Ferah Pastel Mavi',
+    bg: 'bg-sky-50',
+    card: 'bg-white/95',
+    subCard: 'bg-sky-100/60',
+    border: 'border-sky-200',
+    text: 'text-sky-700'
+  },
+  {
+    name: 'Tatlı Pastel Pembe',
+    bg: 'bg-pink-50',
+    card: 'bg-white/95',
+    subCard: 'bg-pink-100/60',
+    border: 'border-pink-200',
+    text: 'text-pink-700'
+  },
+  {
+    name: 'Mint Yeşili',
+    bg: 'bg-emerald-50',
+    card: 'bg-white/95',
+    subCard: 'bg-emerald-100/60',
+    border: 'border-emerald-200',
+    text: 'text-emerald-700'
+  }
+];
 
-                {/* 4. Ders */}
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold text-emerald-400 block">{denemeType === 'TYT' ? 'Fen Bilimleri' : 'Sosyal Bilimler-2'}</span>
-                  <div className="flex gap-2">
-                    <input type="number" placeholder="Doğru" value={scores.d4} onChange={(e) => setScores({ ...scores, d4: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                    <input type="number" placeholder="Yanlış" value={scores.y4} onChange={(e) => setScores({ ...scores, y4: e.target.value })} className={`w-full ${isLight ? 'bg-white' : 'bg-slate-900'} border ${currentTheme.border} rounded p-1 text-center`} />
-                  </div>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} block text-right font-mono`}>Net: {calcNet(scores.d4, scores.y4).toFixed(2)}</span>
-                </div>
-              </div>
+function YksCountdownCard({ currentTheme }) {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-              <div className="flex justify-between items-center pt-2">
-                <span className={`text-sm font-bold ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>Toplam Net: <span className="text-emerald-500 font-mono text-lg">{currentTotalNet.toFixed(2)}</span></span>
-                <button onClick={saveDeneme} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2 rounded-xl text-xs">Denemeyi Kaydet</button>
-              </div>
-            </div>
+  useEffect(() => {
+    const targetDate = new Date('June 19, 2027 10:15:00').getTime();
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
 
-            {/* Geçmiş Denemeler */}
-            <div className="space-y-3">
-              <h3 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>📜 Geçmiş Deneme Sonuçları</h3>
-              {denemeHistory.length === 0 ? (
-                <div className={`${currentTheme.card} p-8 rounded-2xl border ${currentTheme.border} text-center ${isLight ? 'text-slate-500' : 'text-slate-400'} text-sm italic`}>Henüz kaydedilmiş deneme sonucu bulunmuyor.</div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {denemeHistory.map(deneme => (
-                    <div key={deneme.id} className={`${currentTheme.card} p-4 rounded-2xl border ${currentTheme.border} space-y-2`}>
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <span className="bg-indigo-900/20 text-indigo-600 font-bold px-2 py-0.5 rounded text-[10px] border border-indigo-300 mr-2">{deneme.type}</span>
-                          <span className={`font-bold text-sm ${isLight ? 'text-slate-900' : 'text-white'}`}>{deneme.title}</span>
-                        </div>
-                        <button onClick={() => removeDeneme(deneme.id)} className="text-red-500 hover:text-red-700 text-xs">🗑️</button>
-                      </div>
-                      <div className="grid grid-cols-4 gap-2 text-center pt-1">
-                        {deneme.details.map((det, idx) => (
-                          <div key={idx} className={`${currentTheme.subCard} p-1.5 rounded-lg border ${currentTheme.border}`}>
-                            <span className={`text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} block truncate`}>{det.name}</span>
-                            <span className="font-bold text-xs text-indigo-400 font-mono">{det.net.toFixed(2)}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="flex justify-between items-center pt-1 border-t border-slate-700/50 text-xs">
-                        <span className={isLight ? 'text-slate-600' : 'text-slate-400'}>Tarih: {deneme.date}</span>
-                        <span className="font-bold text-emerald-500">Toplam: {deneme.totalNet.toFixed(2)} Net</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        {/* 3. POMODORO / BLOK TABI - Arka Plan Sesleri ile Güncellendi */}
-        {activeTab === 'pomodoro' && (
-          <div className="space-y-6">
-            <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} text-center max-w-xl mx-auto space-y-6 shadow-2xl`}>
-              <div className="flex justify-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${pomodoroMode === 'work' ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-400'}`}>
-                  {pomodoroMode === 'work' ? `💪 ${currentBlock}. Etüt Çalışması` : '☕ Dinlenme Molası'}
-                </span>
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${isLight ? 'bg-slate-200 text-slate-700' : 'bg-slate-800 text-slate-300'}`}>
-                  Hedef Blok: {targetBlocks}
-                </span>
-              </div>
+        setTimeLeft({ days, hours, minutes, seconds });
+      }
+    }, 1000);
 
-              <div className={`text-6xl md:text-8xl font-black font-mono tracking-wider ${isLight ? 'text-slate-900' : 'text-white'}`}>
-                {formatTime(timeLeft)}
-              </div>
+    return () => clearInterval(interval);
+  }, []);
 
-              <div className="flex justify-center gap-3">
-                <button onClick={() => setIsRunning(!isRunning)} className={`px-6 py-3 rounded-xl font-bold text-sm text-white ${isRunning ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}>
-                  {isRunning ? '⏸️ Duraklat' : '▶️ Başlat'}
-                </button>
-                <button onClick={() => { setIsRunning(false); setTimeLeft(pomodoroMode === 'work' ? customWorkTime * 60 : customBreakTime * 60); }} className={`${isLight ? 'bg-slate-200 hover:bg-slate-300 text-slate-700' : 'bg-slate-800 hover:bg-slate-700 text-slate-300'} px-4 py-3 rounded-xl font-bold text-sm`}>
-                  🔄 Sıfırla
-                </button>
-              </div>
+  const isLight = currentTheme.bg.includes('-50') || currentTheme.bg.includes('-100') || currentTheme.bg.includes('slate-200');
 
-              {/* Arka Plan Sesleri Seçim Bölümü */}
-              <BackgroundSoundController currentTheme={currentTheme} isLight={isLight} isRunning={isRunning} />
-
-              <div className="pt-4 border-t border-slate-700/50 space-y-3">
-                <h4 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>⚙️ Süre Ayarları</h4>
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  <div>
-                    <label className={`block text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} mb-1`}>Çalışma (Dk)</label>
-                    <input type="number" value={customWorkTime} onChange={(e) => setCustomWorkTime(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded p-1.5 text-center font-bold`} />
-                  </div>
-                  <div>
-                    <label className={`block text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} mb-1`}>Mola (Dk)</label>
-                    <input type="number" value={customBreakTime} onChange={(e) => setCustomBreakTime(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded p-1.5 text-center font-bold`} />
-                  </div>
-                  <div>
-                    <label className={`block text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} mb-1`}>Blok Sayısı</label>
-                    <input type="number" value={targetBlocks} onChange={(e) => setTargetBlocks(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded p-1.5 text-center font-bold`} />
-                  </div>
-                </div>
-                <button onClick={() => applyCustomPomodoro(customWorkTime, customBreakTime, targetBlocks)} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs">Ayarları Uygula ve Sıfırla</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 4. KAYNAKLAR & HOCALAR TABI */}
-        {activeTab === 'kaynaklar' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Hocalar Yönetimi */}
-              <div className={`${currentTheme.card} p-4 rounded-2xl border ${currentTheme.border} space-y-3`}>
-                <h3 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>👨‍🏫 Takip Edilen Hocalar</h3>
-                <div className="flex gap-2">
-                  <input type="text" placeholder="Yeni hoca adı ve branşı" value={newTeacherInput} onChange={(e) => setNewTeacherInput(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 text-xs`} />
-                  <button onClick={addCustomTeacher} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs shrink-0">Ekle</button>
-                </div>
-                <div className={`max-h-60 overflow-y-auto space-y-1.5 pr-1`}>
-                  {customTeachers.map((teacher, index) => (
-                    <div key={index} className={`${currentTheme.subCard} p-2 rounded-lg border ${currentTheme.border} flex justify-between items-center text-xs`}>
-                      <span className={isLight ? 'text-slate-800 font-medium' : 'text-slate-200'}>{teacher}</span>
-                      <button onClick={() => removeCustomTeacher(teacher)} className="text-red-500 hover:text-red-700">🗑️</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Kaynaklar Yönetimi */}
-              <div className={`${currentTheme.card} p-4 rounded-2xl border ${currentTheme.border} space-y-3`}>
-                <h3 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>📚 Soru Bankaları & Kaynaklar</h3>
-                <div className="flex gap-2">
-                  <input type="text" placeholder="Yeni kaynak adı" value={newBookInput} onChange={(e) => setNewBookInput(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 text-xs`} />
-                  <button onClick={addCustomBook} className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs shrink-0">Ekle</button>
-                </div>
-                <div className={`max-h-60 overflow-y-auto space-y-1.5 pr-1`}>
-                  {customBooks.map((book, index) => (
-                    <div key={index} className={`${currentTheme.subCard} p-2 rounded-lg border ${currentTheme.border} flex justify-between items-center text-xs`}>
-                      <span className={isLight ? 'text-slate-800 font-medium' : 'text-slate-200'}>{book}</span>
-                      <button onClick={() => removeCustomBook(book)} className="text-red-500 hover:text-red-700">🗑️</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
+  return (
+    <div className={`${currentTheme.card} backdrop-blur-md p-5 rounded-2xl border ${currentTheme.border} shadow-xl text-center space-y-3 relative z-10`}>
+      <h3 className={`text-sm md:text-base font-bold ${currentTheme.text} uppercase tracking-wider`}>
+        ⏳ 2027 YKS'ye Kalan Süre
+      </h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
+        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
+          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-slate-900' : 'text-white'} block`}>{timeLeft.days}</span>
+          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Gün</span>
+        </div>
+        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
+          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-sky-700' : 'text-indigo-300'} block`}>{timeLeft.hours}</span>
+          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Saat</span>
+        </div>
+        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
+          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-purple-700' : 'text-purple-300'} block`}>{timeLeft.minutes}</span>
+          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Dakika</span>
+        </div>
+        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
+          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-emerald-700' : 'text-emerald-300'} block`}>{timeLeft.seconds}</span>
+          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Saniye</span>
+        </div>
       </div>
     </div>
   );
 }
 
-// Arka Plan Sesleri Yönetim Bileşeni (Web Audio API ile Sentezlenmiş Ortam Sesleri)
-function BackgroundSoundController({ currentTheme, isLight, isRunning }) {
+export default function App() {
+  const [activeTab, setActiveTab] = useState('pomodoro');
+  const [themeIndex, setThemeIndex] = useState(0);
+  const currentTheme = THEMES[themeIndex] || THEMES[0];
+  const isLight = currentTheme.bg.includes('-50') || currentTheme.bg.includes('-100');
+
+  // Pomodoro & Ses State'leri
+  const [customWorkTime, setCustomWorkTime] = useState(25);
+  const [customBreakTime, setCustomBreakTime] = useState(5);
+  const [targetBlocks, setTargetBlocks] = useState(1);
+  const [currentBlock, setCurrentBlock] = useState(1);
+  const [pomodoroMode, setPomodoroMode] = useState('work');
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [isRunning, setIsRunning] = useState(false);
+
+  // Arka Plan Sesi State'leri (Doğrudan Pomodoro ekranında yer alacak)
   const [selectedSound, setSelectedSound] = useState('none');
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
 
+  // Ses Sentezleme Motoru (Web Audio API)
   useEffect(() => {
     let audioInterval = null;
-
-    // Seçilen sese göre Web Audio API kullanarak arka plan sesleri üretiyoruz
     if (isSoundPlaying && selectedSound !== 'none') {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        if (selectedSound === 'rain') {
-          // Yağmur Sesi (White/Pink Noise generator simülasyonu)
-          const bufferSize = 2 * audioCtx.sampleRate;
-          const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-          const output = noiseBuffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            output[i] = Math.random() * 2 - 1;
-          }
-
-          const whiteNoise = audioCtx.createBufferSource();
-          whiteNoise.buffer = noiseBuffer;
-          whiteNoise.loop = true;
-
-          const filter = audioCtx.createBiquadFilter();
-          filter.type = 'lowpass';
-          filter.frequency.value = 1000;
-
-          const gain = audioCtx.createGain();
-          gain.gain.value = 0.05;
-
-          whiteNoise.connect(filter);
-          filter.connect(gain);
-          gain.connect(audioCtx.destination);
-
-          whiteNoise.start();
-
-          audioInterval = {
-            stop: () => {
-              try { whiteNoise.stop(); audioCtx.close(); } catch(e){}
-            }
-          };
-        } else if (selectedSound === 'study') {
+        if (selectedSound === 'study') {
           // Deneme Ortamı / Kütüphane Uğultusu Sesi
           const bufferSize = 2 * audioCtx.sampleRate;
           const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -266,31 +139,42 @@ function BackgroundSoundController({ currentTheme, isLight, isRunning }) {
           for (let i = 0; i < bufferSize; i++) {
             output[i] = (Math.random() * 2 - 1) * 0.3;
           }
-
           const noise = audioCtx.createBufferSource();
           noise.buffer = noiseBuffer;
           noise.loop = true;
-
           const filter = audioCtx.createBiquadFilter();
           filter.type = 'bandpass';
           filter.frequency.value = 400;
-
           const gain = audioCtx.createGain();
           gain.gain.value = 0.08;
-
           noise.connect(filter);
           filter.connect(gain);
           gain.connect(audioCtx.destination);
-
           noise.start();
 
-          audioInterval = {
-            stop: () => {
-              try { noise.stop(); audioCtx.close(); } catch(e){}
-            }
-          };
+          audioInterval = { stop: () => { try { noise.stop(); audioCtx.close(); } catch(e){} } };
+        } else if (selectedSound === 'rain') {
+          // Yağmur Sesi
+          const bufferSize = 2 * audioCtx.sampleRate;
+          const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) { output[i] = Math.random() * 2 - 1; }
+          const whiteNoise = audioCtx.createBufferSource();
+          whiteNoise.buffer = noiseBuffer;
+          whiteNoise.loop = true;
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.value = 1000;
+          const gain = audioCtx.createGain();
+          gain.gain.value = 0.05;
+          whiteNoise.connect(filter);
+          filter.connect(gain);
+          gain.connect(audioCtx.destination);
+          whiteNoise.start();
+
+          audioInterval = { stop: () => { try { whiteNoise.stop(); audioCtx.close(); } catch(e){} } };
         } else if (selectedSound === 'fire') {
-          // Şömine Sesi (Çatırtı efekti)
+          // Şömine Sesi
           audioInterval = setInterval(() => {
             if (Math.random() > 0.4) {
               const osc = audioCtx.createOscillator();
@@ -322,7 +206,7 @@ function BackgroundSoundController({ currentTheme, isLight, isRunning }) {
             osc.stop(audioCtx.currentTime + 0.15);
           }, 800);
         } else if (selectedSound === 'lofi') {
-          // Hafif Müzik / Akor Sesi
+          // Hafif Müzik / Akor
           const notes = [261.63, 329.63, 392.00, 523.25];
           audioInterval = setInterval(() => {
             const osc = audioCtx.createOscillator();
@@ -349,41 +233,109 @@ function BackgroundSoundController({ currentTheme, isLight, isRunning }) {
     }
   }, [isSoundPlaying, selectedSound]);
 
-  return (
-    <div className={`p-4 rounded-xl border ${currentTheme.border} ${currentTheme.subCard} space-y-3 text-left`}>
-      <div className="flex justify-between items-center">
-        <span className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>🎧 Etüt Arka Plan Sesi</span>
-        <button
-          onClick={() => setIsSoundPlaying(!isSoundPlaying)}
-          disabled={selectedSound === 'none'}
-          className={`px-3 py-1 rounded-lg text-xs font-bold ${selectedSound === 'none' ? 'opacity-50 cursor-not-allowed bg-slate-700 text-slate-400' : isSoundPlaying ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'}`}
-        >
-          {isSoundPlaying ? 'Sesi Kapat 🔇' : 'Sesi Aç 🔊'}
-        </button>
-      </div>
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
-        {[
-          { id: 'none', label: 'Ses Yok', icon: '🔇' },
-          { id: 'study', label: 'Deneme Ortamı', icon: '🏛️' },
-          { id: 'rain', label: 'Yağmur Sesi', icon: '🌧️' },
-          { id: 'fire', label: 'Şömine Sesi', icon: '🔥' },
-          { id: 'birds', label: 'Kuş Sesleri', icon: '🐦' },
-          { id: 'lofi', label: 'Hafif Müzik', icon: '🎶' }
-        ].map((sound) => (
-          <button
-            key={sound.id}
-            onClick={() => { setSelectedSound(sound.id); setIsSoundPlaying(sound.id !== 'none'); }}
-            className={`p-2 rounded-lg border text-left font-medium transition-all flex items-center gap-2 ${selectedSound === sound.id ? 'bg-indigo-600 text-white border-indigo-500 shadow-md' : `${isLight ? 'bg-white hover:bg-slate-100 text-slate-800' : 'bg-slate-900 hover:bg-slate-800 text-slate-300'} ${currentTheme.border}`}`}
-          >
-            <span>{sound.icon}</span>
-            <span className="truncate">{sound.label}</span>
-          </button>
-        ))}
+  return (
+    <div className={`min-h-screen ${currentTheme.bg} ${isLight ? 'text-slate-900' : 'text-white'} p-3 md:p-6 font-sans`}>
+      <div className="max-w-4xl mx-auto space-y-6">
+
+        {/* POMODORO / BLOK SEKMESİ */}
+        {activeTab === 'pomodoro' && (
+          <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} text-center space-y-6 shadow-2xl`}>
+
+            {/* ÇALIŞMA AYARLARI VE ARKA PLAN SESLERİ BÖLÜMÜ */}
+            <div className={`p-4 rounded-xl border ${currentTheme.border} ${currentTheme.subCard} space-y-4 text-left`}>
+              <h3 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider text-center`}>
+                ⚙️ ÇALIŞMA AYARLARI & ARKA PLAN SESİ
+              </h3>
+
+              {/* Süre Ayarları */}
+              <div className="grid grid-cols-3 gap-3 text-xs">
+                <div>
+                  <label className={`block text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} mb-1 font-bold`}>Çalışma (dk)</label>
+                  <input type="number" value={customWorkTime} onChange={(e) => setCustomWorkTime(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded p-1.5 text-center font-bold`} />
+                </div>
+                <div>
+                  <label className={`block text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} mb-1 font-bold`}>Mola (dk)</label>
+                  <input type="number" value={customBreakTime} onChange={(e) => setCustomBreakTime(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded p-1.5 text-center font-bold`} />
+                </div>
+                <div>
+                  <label className={`block text-[10px] ${isLight ? 'text-slate-600' : 'text-slate-400'} mb-1 font-bold`}>Blok Sayısı (Etüt)</label>
+                  <input type="number" value={targetBlocks} onChange={(e) => setTargetBlocks(e.target.value)} className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded p-1.5 text-center font-bold`} />
+                </div>
+              </div>
+
+              {/* Hızlı Seçim Butonları */}
+              <div className="flex flex-wrap justify-center gap-2 pt-1">
+                <button onClick={() => { setCustomWorkTime(25); setCustomBreakTime(5); setTargetBlocks(1); setTimeLeft(25*60); }} className="px-3 py-1.5 bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 rounded-lg text-xs font-bold">⚡ Tekil (25/5 dk)</button>
+                <button onClick={() => { setCustomWorkTime(50); setCustomBreakTime(10); setTargetBlocks(2); setTimeLeft(50*60); }} className="px-3 py-1.5 bg-amber-600/20 text-amber-400 border border-amber-500/30 rounded-lg text-xs font-bold">🪵 2 Blok (50/10 dk)</button>
+                <button onClick={() => { setCustomWorkTime(40); setCustomBreakTime(10); setTargetBlocks(3); setTimeLeft(40*60); }} className="px-3 py-1.5 bg-purple-600/20 text-purple-400 border border-purple-500/30 rounded-lg text-xs font-bold">🚀 3 Blok Maraton</button>
+              </div>
+
+              {/* ARKA PLAN SESİ SEÇİMİ (İstediğin Bölüm) */}
+              <div className="pt-3 border-t border-slate-700/50 space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>🎧 Etüt Arka Plan Sesi</span>
+                  <button
+                    onClick={() => setIsSoundPlaying(!isSoundPlaying)}
+                    disabled={selectedSound === 'none'}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold ${selectedSound === 'none' ? 'opacity-50 cursor-not-allowed bg-slate-700 text-slate-400' : isSoundPlaying ? 'bg-red-600 text-white' : 'bg-emerald-600 text-white'}`}
+                  >
+                    {isSoundPlaying ? 'Sesi Kapat 🔇' : 'Sesi Aç 🔊'}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                  {[
+                    { id: 'none', label: 'Ses Yok', icon: '🔇' },
+                    { id: 'study', label: 'Deneme Ortamı', icon: '🏛️' },
+                    { id: 'rain', label: 'Yağmur Sesi', icon: '🌧️' },
+                    { id: 'fire', label: 'Şömine Sesi', icon: '🔥' },
+                    { id: 'birds', label: 'Kuş Sesleri', icon: '🐦' },
+                    { id: 'lofi', label: 'Hafif Müzik', icon: '🎶' }
+                  ].map((sound) => (
+                    <button
+                      key={sound.id}
+                      onClick={() => { setSelectedSound(sound.id); setIsSoundPlaying(sound.id !== 'none'); }}
+                      className={`p-2 rounded-lg border text-left font-medium transition-all flex items-center gap-2 ${selectedSound === sound.id ? 'bg-indigo-600 text-white border-indigo-500 shadow-md' : `${isLight ? 'bg-white hover:bg-slate-100 text-slate-800' : 'bg-slate-900 hover:bg-slate-800 text-slate-300'} ${currentTheme.border}`}`}
+                    >
+                      <span>{sound.icon}</span>
+                      <span className="truncate">{sound.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Sayaç Ekranı */}
+            <div className="flex justify-center gap-2">
+              <span className={`px-3 py-1 rounded-full text-xs font-bold ${pomodoroMode === 'work' ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-400'}`}>
+                {pomodoroMode === 'work' ? `🧠 ÇALIŞMA (${currentBlock}/${targetBlocks}. BLOK)` : '☕ DİNLENME MOLASI'}
+              </span>
+            </div>
+
+            <div className={`text-6xl md:text-8xl font-black font-mono tracking-wider ${isLight ? 'text-slate-900' : 'text-white'}`}>
+              {formatTime(timeLeft)}
+            </div>
+
+            <div className="flex justify-center gap-3">
+              <button onClick={() => setIsRunning(!isRunning)} className={`px-6 py-3 rounded-xl font-bold text-sm text-white ${isRunning ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}>
+                {isRunning ? '⏸️ Duraklat' : '▶️ Başlat'}
+              </button>
+              <button onClick={() => { setIsRunning(false); setTimeLeft(pomodoroMode === 'work' ? customWorkTime * 60 : customBreakTime * 60); }} className={`${isLight ? 'bg-slate-200 hover:bg-slate-300 text-slate-700' : 'bg-slate-800 hover:bg-slate-700 text-slate-300'} px-4 py-3 rounded-xl font-bold text-sm`}>
+                🔄 Sıfırla
+              </button>
+            </div>
+
+          </div>
+        )}
+
       </div>
-      <p className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'} italic`}>
-        * İstediğin ortam sesini seçerek odaklanma kaliteni artırabilirsin. Özellikle "Deneme Ortamı" sınav atmosferini simüle eder.
-      </p>
     </div>
   );
 }
