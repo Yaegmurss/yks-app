@@ -20,209 +20,34 @@ const MONTHS = [
 ];
 
 const THEMES = [
-  {
-    name: 'Klasik Koyu (Slate)',
-    bg: 'bg-slate-900',
-    card: 'bg-slate-800/95',
-    subCard: 'bg-slate-900/90',
-    border: 'border-slate-700',
-    text: 'text-indigo-400'
-  },
-  {
-    name: 'Ferah Pastel Mavi',
-    bg: 'bg-sky-50',
-    card: 'bg-white/95',
-    subCard: 'bg-sky-100/60',
-    border: 'border-sky-200',
-    text: 'text-sky-700'
-  },
-  {
-    name: 'Tatlı Pastel Pembe',
-    bg: 'bg-pink-50',
-    card: 'bg-white/95',
-    subCard: 'bg-pink-100/60',
-    border: 'border-pink-200',
-    text: 'text-pink-700'
-  },
-  {
-    name: 'Mint Yeşili',
-    bg: 'bg-emerald-50',
-    card: 'bg-white/95',
-    subCard: 'bg-emerald-100/60',
-    border: 'border-emerald-200',
-    text: 'text-emerald-700'
-  },
-  {
-    name: 'Güneşli Pastel Sarı',
-    bg: 'bg-amber-50',
-    card: 'bg-white/95',
-    subCard: 'bg-amber-100/60',
-    border: 'border-amber-200',
-    text: 'text-amber-700'
-  },
-  {
-    name: 'Lavanta Moru',
-    bg: 'bg-purple-50',
-    card: 'bg-white/95',
-    subCard: 'bg-purple-100/60',
-    border: 'border-purple-200',
-    text: 'text-purple-700'
-  },
-  {
-    name: 'Gece Mavisi',
-    bg: 'bg-gray-950',
-    card: 'bg-gray-900/95',
-    subCard: 'bg-gray-950/90',
-    border: 'border-gray-800',
-    text: 'text-blue-400'
-  },
-  {
-    name: 'Koyu Mor',
-    bg: 'bg-purple-950',
-    card: 'bg-purple-900/95',
-    subCard: 'bg-purple-950/90',
-    border: 'border-purple-800',
-    text: 'text-purple-300'
-  },
-  {
-    name: 'Derin İndigo',
-    bg: 'bg-indigo-950',
-    card: 'bg-indigo-900/95',
-    subCard: 'bg-indigo-950/90',
-    border: 'border-indigo-800',
-    text: 'text-indigo-300'
-  },
-  {
-    name: 'Zümrüt Siyahı',
-    bg: 'bg-emerald-950',
-    card: 'bg-emerald-900/95',
-    subCard: 'bg-emerald-950/90',
-    border: 'border-emerald-800',
-    text: 'text-emerald-300'
-  },
-  {
-    name: 'Koyu Gül Kurusu',
-    bg: 'bg-rose-950',
-    card: 'bg-rose-900/95',
-    subCard: 'bg-rose-950/90',
-    border: 'border-rose-800',
-    text: 'text-rose-300'
-  },
-  {
-    name: 'Obsidyen',
-    bg: 'bg-neutral-900',
-    card: 'bg-neutral-800/95',
-    subCard: 'bg-neutral-900/90',
-    border: 'border-neutral-700',
-    text: 'text-amber-400'
-  },
-  {
-    name: 'Saf Gece Siyahı',
-    bg: 'bg-black',
-    card: 'bg-zinc-900/95',
-    subCard: 'bg-black/90',
-    border: 'border-zinc-800',
-    text: 'text-zinc-300'
-  },
-  {
-    name: 'Koyu Kırmızı Kanvas',
-    bg: 'bg-red-950',
-    card: 'bg-red-900/95',
-    subCard: 'bg-red-950/90',
-    border: 'border-red-800',
-    text: 'text-red-300'
-  },
-  {
-    name: 'Derin Amber',
-    bg: 'bg-amber-950',
-    card: 'bg-amber-900/95',
-    subCard: 'bg-amber-950/90',
-    border: 'border-amber-800',
-    text: 'text-amber-300'
-  },
-  {
-    name: 'Koyu Turkuaz',
-    bg: 'bg-teal-950',
-    card: 'bg-teal-900/95',
-    subCard: 'bg-teal-950/90',
-    border: 'border-teal-800',
-    text: 'text-teal-300'
-  },
-  {
-    name: 'Koyu Fuşya',
-    bg: 'bg-fuchsia-950',
-    card: 'bg-fuchsia-900/95',
-    subCard: 'bg-fuchsia-950/90',
-    border: 'border-fuchsia-800',
-    text: 'text-fuchsia-300'
-  },
-  {
-    name: 'Koyu Limon',
-    bg: 'bg-lime-950',
-    card: 'bg-lime-900/95',
-    subCard: 'bg-lime-950/90',
-    border: 'border-lime-800',
-    text: 'text-lime-300'
-  },
-  {
-    name: 'Koyu Askeri Yeşil',
-    bg: 'bg-green-950',
-    card: 'bg-green-900/95',
-    subCard: 'bg-green-950/90',
-    border: 'border-green-800',
-    text: 'text-green-300'
-  },
-  {
-    name: 'Koyu Sarı Ton',
-    bg: 'bg-yellow-950',
-    card: 'bg-yellow-900/95',
-    subCard: 'bg-yellow-950/90',
-    border: 'border-yellow-800',
-    text: 'text-yellow-300'
-  },
-  {
-    name: 'Gümüş Gri',
-    bg: 'bg-slate-200',
-    card: 'bg-white/95',
-    subCard: 'bg-slate-100',
-    border: 'border-slate-300',
-    text: 'text-slate-800'
-  },
-  {
-    name: 'Koyu Deniz Mavisi',
-    bg: 'bg-sky-950',
-    card: 'bg-sky-900/95',
-    subCard: 'bg-sky-950/90',
-    border: 'border-sky-800',
-    text: 'text-sky-300'
-  },
-  {
-    name: 'Gece Menekşesi',
-    bg: 'bg-purple-900',
-    card: 'bg-purple-800/95',
-    subCard: 'bg-purple-950/90',
-    border: 'border-purple-700',
-    text: 'text-pink-300'
-  },
-  {
-    name: 'Krem & Kahve',
-    bg: 'bg-stone-100',
-    card: 'bg-white/95',
-    subCard: 'bg-stone-200/70',
-    border: 'border-stone-300',
-    text: 'text-stone-800'
-  },
-  {
-    name: 'Pastel Turuncu',
-    bg: 'bg-orange-50',
-    card: 'bg-white/95',
-    subCard: 'bg-orange-100/60',
-    border: 'border-orange-200',
-    text: 'text-orange-700'
-  }
+  { id: 'slate', name: 'Gece Yarısı (Koyu)', bg: 'bg-slate-950', card: 'bg-slate-900/95', text: 'text-white', primary: 'bg-indigo-600', border: 'border-slate-800' },
+  { id: 'zinc', name: 'Kömür Siyahı', bg: 'bg-zinc-950', card: 'bg-zinc-900/95', text: 'text-zinc-100', primary: 'bg-zinc-700', border: 'border-zinc-800' },
+  { id: 'rose', name: 'Pastel Gül', bg: 'bg-rose-950/40', card: 'bg-rose-900/20', text: 'text-rose-100', primary: 'bg-rose-600', border: 'border-rose-800/40' },
+  { id: 'emerald', name: 'Zümrüt Ormanı', bg: 'bg-emerald-950/40', card: 'bg-emerald-900/20', text: 'text-emerald-100', primary: 'bg-emerald-600', border: 'border-emerald-800/40' },
+  { id: 'amber', name: 'Gün Batımı', bg: 'bg-amber-950/40', card: 'bg-amber-900/20', text: 'text-amber-100', primary: 'bg-amber-600', border: 'border-amber-800/40' },
+  { id: 'purple', name: 'Mor Gece', bg: 'bg-purple-950/40', card: 'bg-purple-900/20', text: 'text-purple-100', primary: 'bg-purple-600', border: 'border-purple-800/40' },
+  { id: 'cyan', name: 'Neon Mavi', bg: 'bg-cyan-950/40', card: 'bg-cyan-900/20', text: 'text-cyan-100', primary: 'bg-cyan-600', border: 'border-cyan-800/40' },
+  { id: 'blue', name: 'Okyanus', bg: 'bg-blue-950/40', card: 'bg-blue-900/20', text: 'text-blue-100', primary: 'bg-blue-600', border: 'border-blue-800/40' },
+  { id: 'indigo', name: 'Koyu İndigo', bg: 'bg-indigo-950/40', card: 'bg-indigo-900/20', text: 'text-indigo-100', primary: 'bg-indigo-600', border: 'border-indigo-800/40' },
+  { id: 'violet', name: 'Menekşe', bg: 'bg-violet-950/40', card: 'bg-violet-900/20', text: 'text-violet-100', primary: 'bg-violet-600', border: 'border-violet-800/40' },
+  { id: 'fuchsia', name: 'Fuşya Parlı', bg: 'bg-fuchsia-950/40', card: 'bg-fuchsia-900/20', text: 'text-fuchsia-100', primary: 'bg-fuchsia-600', border: 'border-fuchsia-800/40' },
+  { id: 'pink', name: 'Pastel Pembe', bg: 'bg-pink-950/40', card: 'bg-pink-900/20', text: 'text-pink-100', primary: 'bg-pink-600', border: 'border-pink-800/40' },
+  { id: 'teal', name: 'Koyu Teal', bg: 'bg-teal-950/40', card: 'bg-teal-900/20', text: 'text-teal-100', primary: 'bg-teal-600', border: 'border-teal-800/40' },
+  { id: 'sky', name: 'Gök Mavisi', bg: 'bg-sky-950/40', card: 'bg-sky-900/20', text: 'text-sky-100', primary: 'bg-sky-600', border: 'border-sky-800/40' },
+  { id: 'lime', name: 'Canlı Limon', bg: 'bg-lime-950/40', card: 'bg-lime-900/20', text: 'text-lime-100', primary: 'bg-lime-600', border: 'border-lime-800/40' },
+  { id: 'yellow', name: 'Pastel Sarı', bg: 'bg-yellow-950/40', card: 'bg-yellow-900/20', text: 'text-yellow-100', primary: 'bg-yellow-600', border: 'border-yellow-800/40' },
+  { id: 'orange', name: 'Turuncu Akşam', bg: 'bg-orange-950/40', card: 'bg-orange-900/20', text: 'text-orange-100', primary: 'bg-orange-600', border: 'border-orange-800/40' },
+  { id: 'red', name: 'Kan Kırmızı', bg: 'bg-red-950/40', card: 'bg-red-900/20', text: 'text-red-100', primary: 'bg-red-600', border: 'border-red-800/40' },
+  { id: 'stone', name: 'Taş Gri', bg: 'bg-stone-950', card: 'bg-stone-900/95', text: 'text-stone-100', primary: 'bg-stone-700', border: 'border-stone-800' },
+  { id: 'neutral', name: 'Nötr Gri', bg: 'bg-neutral-950', card: 'bg-neutral-900/95', text: 'text-neutral-100', primary: 'bg-neutral-700', border: 'border-neutral-800' },
+  { id: 'pastel1', name: 'Pastel Lavanta', bg: 'bg-purple-950/20', card: 'bg-slate-900/90', text: 'text-purple-200', primary: 'bg-purple-500', border: 'border-purple-900/30' },
+  { id: 'pastel2', name: 'Pastel Mint', bg: 'bg-teal-950/20', card: 'bg-slate-900/90', text: 'text-teal-200', primary: 'bg-teal-500', border: 'border-teal-900/30' },
+  { id: 'pastel3', name: 'Pastel Şeftali', bg: 'bg-orange-950/20', card: 'bg-slate-900/90', text: 'text-orange-200', primary: 'bg-orange-500', border: 'border-orange-900/30' },
+  { id: 'pastel4', name: 'Pastel Lila', bg: 'bg-indigo-950/20', card: 'bg-slate-900/90', text: 'text-indigo-200', primary: 'bg-indigo-500', border: 'border-indigo-900/30' },
+  { id: 'pastel5', name: 'Yumuşak Krem', bg: 'bg-zinc-900', card: 'bg-zinc-800/90', text: 'text-amber-100', primary: 'bg-amber-700', border: 'border-zinc-700' }
 ];
 
-function YksCountdownCard({ currentTheme }) {
+function YksCountdownCard() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -244,29 +69,27 @@ function YksCountdownCard({ currentTheme }) {
     return () => clearInterval(interval);
   }, []);
 
-  const isLight = currentTheme.bg.includes('-50') || currentTheme.bg.includes('-100') || currentTheme.bg.includes('slate-200');
-
   return (
-    <div className={`${currentTheme.card} backdrop-blur-md p-5 rounded-2xl border ${currentTheme.border} shadow-xl text-center space-y-3 relative z-10`}>
-      <h3 className={`text-sm md:text-base font-bold ${currentTheme.text} uppercase tracking-wider`}>
+    <div className="bg-slate-900/90 backdrop-blur-md p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3 relative z-10">
+      <h3 className="text-sm md:text-base font-bold text-indigo-400 uppercase tracking-wider">
         ⏳ 2027 YKS'ye Kalan Süre
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
-        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
-          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-slate-900' : 'text-white'} block`}>{timeLeft.days}</span>
-          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Gün</span>
+        <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-white block">{timeLeft.days}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Gün</span>
         </div>
-        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
-          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-sky-700' : 'text-indigo-300'} block`}>{timeLeft.hours}</span>
-          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Saat</span>
+        <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-indigo-300 block">{timeLeft.hours}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Saat</span>
         </div>
-        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
-          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-purple-700' : 'text-purple-300'} block`}>{timeLeft.minutes}</span>
-          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Dakika</span>
+        <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-purple-300 block">{timeLeft.minutes}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Dakika</span>
         </div>
-        <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl`}>
-          <span className={`text-2xl md:text-3xl font-black font-mono ${isLight ? 'text-emerald-700' : 'text-emerald-300'} block`}>{timeLeft.seconds}</span>
-          <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold uppercase`}>Saniye</span>
+        <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-emerald-300 block">{timeLeft.seconds}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Saniye</span>
         </div>
       </div>
     </div>
@@ -275,18 +98,15 @@ function YksCountdownCard({ currentTheme }) {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('program');
-  const [themeIndex, setThemeIndex] = useState(() => {
-    const saved = localStorage.getItem('yks_themeIndex');
-    return saved !== null ? parseInt(saved) : 0;
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    return localStorage.getItem('yks_theme') || 'slate';
   });
-  const [showColorPicker, setShowColorPicker] = useState(false);
-
-  const currentTheme = THEMES[themeIndex] || THEMES[0];
-  const isLight = currentTheme.bg.includes('-50') || currentTheme.bg.includes('-100') || currentTheme.bg.includes('slate-200');
 
   useEffect(() => {
-    localStorage.setItem('yks_themeIndex', themeIndex);
-  }, [themeIndex]);
+    localStorage.setItem('yks_theme', currentTheme);
+  }, [currentTheme]);
+
+  const activeThemeObj = THEMES.find(t => t.id === currentTheme) || THEMES[0];
 
   const [customTeachers, setCustomTeachers] = useState(() => {
     const saved = localStorage.getItem('yks_customTeachers');
@@ -482,7 +302,6 @@ export default function App() {
 
   const [selectedEndSound, setSelectedEndSound] = useState('bell');
 
-  // Belirli bir ses türünü test amaçlı çalan fonksiyon
   const playSpecificSound = (soundType) => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -533,7 +352,7 @@ export default function App() {
   const handleEndSoundChange = (e) => {
     const newSound = e.target.value;
     setSelectedEndSound(newSound);
-    playSpecificSound(newSound); // Seçildiği anda kullanıcı duysun diye test sesi çalıyoruz
+    playSpecificSound(newSound);
   };
 
   useEffect(() => {
@@ -589,91 +408,84 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen ${currentTheme.bg} ${isLight ? 'text-slate-900' : 'text-white'} p-3 md:p-6 font-sans transition-colors duration-300 relative`}>
-
+    <div className={`min-h-screen ${activeThemeObj.bg} ${activeThemeObj.text} p-3 md:p-6 font-sans transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* Üst Menü */}
-        <header className={`${currentTheme.card} backdrop-blur-md p-4 rounded-2xl border ${currentTheme.border} flex flex-col md:flex-row justify-between items-center gap-4 relative z-50 shadow-2xl`}>
+        <header className={`${activeThemeObj.card} backdrop-blur-md p-4 rounded-2xl border ${activeThemeObj.border} flex flex-col md:flex-row justify-between items-center gap-4 relative z-50 shadow-2xl`}>
           <div className="flex items-center gap-3">
-            <h1 className={`text-xl md:text-2xl font-bold ${currentTheme.text}`}>
-              ⚡ YKS Çalışma Masası <span className={`italic text-sm font-normal ${isLight ? 'text-slate-600' : 'text-slate-400'} ml-2`}>By Yağmur</span>
+            <h1 className="text-xl md:text-2xl font-bold text-indigo-400">
+              ⚡ YKS Çalışma Masası <span className="italic text-sm font-normal text-slate-400 ml-2">By Yağmur</span>
             </h1>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <button onClick={() => setActiveTab('program')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'program' ? 'bg-indigo-600 text-white' : `${isLight ? 'bg-slate-200 text-slate-700' : 'bg-slate-900 text-slate-400'}`}`}>📊 Program</button>
-            <button onClick={() => setActiveTab('deneme')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'deneme' ? 'bg-indigo-600 text-white' : `${isLight ? 'bg-slate-200 text-slate-700' : 'bg-slate-900 text-slate-400'}`}`}>📈 Denemeler</button>
-            <button onClick={() => setActiveTab('pomodoro')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'pomodoro' ? 'bg-indigo-600 text-white' : `${isLight ? 'bg-slate-200 text-slate-700' : 'bg-slate-900 text-slate-400'}`}`}>⏱️ Pomodoro / Blok</button>
-            <button onClick={() => setActiveTab('kaynaklar')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'kaynaklar' ? 'bg-indigo-600 text-white' : `${isLight ? 'bg-slate-200 text-slate-700' : 'bg-slate-900 text-slate-400'}`}`}>📚 Kaynaklar & Hocalar</button>
-
-            {/* Tema Seçici Butonu */}
-            <div className="relative">
-              <button onClick={() => setShowColorPicker(!showColorPicker)} className={`${isLight ? 'bg-slate-200 hover:bg-slate-300 text-slate-800 border-slate-300' : 'bg-slate-700 hover:bg-slate-600 text-white border-slate-600'} px-3 py-2 rounded-xl text-xs font-bold border flex items-center gap-1`}>
-                🎨 Tema ({currentTheme.name})
-              </button>
-              {showColorPicker && (
-                <div className={`absolute right-0 mt-2 w-60 max-h-80 overflow-y-auto ${isLight ? 'bg-white border-slate-300' : 'bg-slate-800 border-slate-700'} border rounded-xl p-2 shadow-2xl z-50 space-y-1`}>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'} font-bold block px-2 pb-1 uppercase tracking-wider`}>25 Farklı Tema Seçeneği</span>
-                  {THEMES.map((th, idx) => (
-                    <button key={idx} onClick={() => { setThemeIndex(idx); setShowColorPicker(false); }} className={`w-full text-left px-2 py-1.5 rounded-lg text-xs font-medium ${isLight ? 'hover:bg-slate-100 text-slate-800' : 'hover:bg-slate-700 text-slate-300'} flex items-center gap-2 ${themeIndex === idx ? 'bg-indigo-600 text-white' : ''}`}>
-                      <span className={`w-3 h-3 rounded-full ${th.bg} border ${th.border} inline-block shrink-0`}></span>
-                      <span className="truncate">{th.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+            <div className="flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-xl border border-slate-800">
+              <span className="text-[10px] text-slate-400">🎨 Tema:</span>
+              <select
+                value={currentTheme}
+                onChange={(e) => setCurrentTheme(e.target.value)}
+                className="bg-transparent text-xs font-bold text-indigo-300 outline-none cursor-pointer"
+              >
+                {THEMES.map(t => (
+                  <option key={t.id} value={t.id} className="bg-slate-900 text-white">{t.name}</option>
+                ))}
+              </select>
             </div>
 
+            <button onClick={() => setActiveTab('program')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'program' ? 'bg-indigo-600 text-white' : 'bg-slate-900/80 text-slate-400'}`}>📊 Program</button>
+            <button onClick={() => setActiveTab('deneme')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'deneme' ? 'bg-indigo-600 text-white' : 'bg-slate-900/80 text-slate-400'}`}>📈 Denemeler</button>
+            <button onClick={() => setActiveTab('pomodoro')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'pomodoro' ? 'bg-indigo-600 text-white' : 'bg-slate-900/80 text-slate-400'}`}>⏱️ Pomodoro / Blok</button>
+            <button onClick={() => setActiveTab('kaynaklar')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'kaynaklar' ? 'bg-indigo-600 text-white' : 'bg-slate-900/80 text-slate-400'}`}>📚 Kaynaklar & Hocalar</button>
             <button onClick={resetAllData} className="bg-red-600/80 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-xs font-bold border border-red-500/50">🗑️ Sıfırla</button>
           </div>
         </header>
 
         {/* YKS Geri Sayım Kartı */}
-        <YksCountdownCard currentTheme={currentTheme} />
+        <YksCountdownCard />
 
         {/* 1. DERS PROGRAMI TABI */}
         {activeTab === 'program' && (
           <div className="space-y-6">
-            <div className={`${currentTheme.card} p-4 rounded-2xl border ${currentTheme.border} flex flex-wrap justify-between items-center gap-4`}>
+            <div className={`${activeThemeObj.card} p-4 rounded-2xl border ${activeThemeObj.border} flex flex-wrap justify-between items-center gap-4`}>
               <div className="flex items-center gap-2">
-                <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'} font-bold`}>📅 Görüntülenen Ay:</span>
-                <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className={`${isLight ? 'bg-indigo-50 border-indigo-200 text-indigo-700' : 'bg-indigo-950 border-indigo-700 text-indigo-300'} font-bold rounded-lg px-3 py-1.5 text-xs`}>
+                <span className="text-xs text-slate-400 font-bold">📅 Görüntülenen Ay:</span>
+                <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="bg-indigo-950 border border-indigo-700 text-indigo-300 font-bold rounded-lg px-3 py-1.5 text-xs">
                   {MONTHS.map(m => <option key={m} value={m}>{m} Ayı</option>)}
                 </select>
               </div>
-              <span className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>Seçili ayda toplam <strong>{monthSchedule.length}</strong> ders kaydı var.</span>
+              <span className="text-xs text-slate-400">Seçili ayda toplam <strong>{monthSchedule.length}</strong> ders kaydı var.</span>
             </div>
 
             {/* Ders Ekleme Formu */}
-            <div className={`${currentTheme.card} p-4 rounded-2xl border ${currentTheme.border} space-y-3`}>
-              <h3 className={`text-xs font-bold ${currentTheme.text} uppercase tracking-wider`}>➕ Ders / Video Ekle</h3>
+            <div className={`${activeThemeObj.card} p-4 rounded-2xl border ${activeThemeObj.border} space-y-3`}>
+              <h3 className="text-xs font-bold text-indigo-400 uppercase tracking-wider">➕ Ders / Video Ekle</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-10 gap-2 text-xs">
-                <select value={formMonth} onChange={(e) => setFormMonth(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 font-bold ${currentTheme.text}`}>
+                <select value={formMonth} onChange={(e) => setFormMonth(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 font-bold text-indigo-400">
                   {MONTHS.map(m => <option key={m} value={m}>{m} Ayı</option>)}
                 </select>
-                <input type="date" value={formDate} onChange={(e) => setFormDate(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`} />
-                <select value={formDay} onChange={(e) => setFormDay(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`}>
+                <input type="date" value={formDate} onChange={(e) => setFormDate(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 text-white" />
+                <select value={formDay} onChange={(e) => setFormDay(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 text-white">
                   {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
                 </select>
-                <div className={`flex items-center gap-1 ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-1`}>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'} pl-1`}>Başla:</span>
-                  <input type="time" value={formStartTime} onChange={(e) => setFormStartTime(e.target.value)} className="bg-transparent w-full outline-none text-xs" />
+                <div className="flex items-center gap-1 bg-slate-950/90 border border-slate-700 rounded-lg p-1">
+                  <span className="text-[10px] text-slate-400 pl-1">Başla:</span>
+                  <input type="time" value={formStartTime} onChange={(e) => setFormStartTime(e.target.value)} className="bg-transparent w-full outline-none text-xs text-white" />
                 </div>
-                <div className={`flex items-center gap-1 ${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-1`}>
-                  <span className={`text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'} pl-1`}>Bitiş:</span>
-                  <input type="time" value={formEndTime} onChange={(e) => setFormEndTime(e.target.value)} className="bg-transparent w-full outline-none text-xs" />
+                <div className="flex items-center gap-1 bg-slate-950/90 border border-slate-700 rounded-lg p-1">
+                  <span className="text-[10px] text-slate-400 pl-1">Bitiş:</span>
+                  <input type="time" value={formEndTime} onChange={(e) => setFormEndTime(e.target.value)} className="bg-transparent w-full outline-none text-xs text-white" />
                 </div>
-                <select value={formSubject} onChange={(e) => setFormSubject(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`}>
+                <select value={formSubject} onChange={(e) => setFormSubject(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 text-white">
                   <option value="Matematik">Matematik</option><option value="Geometri">Geometri</option><option value="Fizik">Fizik</option><option value="Kimya">Kimya</option><option value="Biyoloji">Biyoloji</option><option value="Türkçe">Türkçe</option><option value="Tarih">Tarih</option><option value="Coğrafya">Coğrafya</option>
                 </select>
-                <select value={formTeacher} onChange={(e) => setFormTeacher(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`}>
+                <select value={formTeacher} onChange={(e) => setFormTeacher(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 text-white">
                   {customTeachers.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
-                <input type="text" placeholder="Kaynak Yazın" value={formBook} onChange={(e) => setFormBook(e.target.value)} list="books-list" className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`} />
+                <input type="text" placeholder="Kaynak Yazın" value={formBook} onChange={(e) => setFormBook(e.target.value)} list="books-list" className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 text-white" />
                 <datalist id="books-list">{customBooks.map((b, i) => <option key={i} value={b} />)}</datalist>
-                <input type="number" placeholder="Soru Sayısı" value={formQuestions} onChange={(e) => setFormQuestions(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2`} />
-                <input type="text" placeholder="YouTube Linki" value={formYtUrl} onChange={(e) => handleYtUrlChange(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-lg p-2 col-span-2 md:col-span-1`} />
+                <input type="number" placeholder="Soru Sayısı" value={formQuestions} onChange={(e) => setFormQuestions(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 text-white" />
+                <input type="text" placeholder="YouTube Linki" value={formYtUrl} onChange={(e) => handleYtUrlChange(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-lg p-2 col-span-2 md:col-span-1 text-white" />
               </div>
               <button onClick={addScheduleItem} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs">Listeye Ekle</button>
             </div>
@@ -681,31 +493,31 @@ export default function App() {
             {/* Ders Listesi */}
             <div className="space-y-4">
               {activeDays.length === 0 ? (
-                <div className={`${currentTheme.card} p-8 rounded-2xl border ${currentTheme.border} text-center ${isLight ? 'text-slate-500' : 'text-slate-400'} text-sm italic`}>{selectedMonth} ayı için henüz ders eklenmedi.</div>
+                <div className={`${activeThemeObj.card} p-8 rounded-2xl border ${activeThemeObj.border} text-center text-slate-400 text-sm italic`}>{selectedMonth} ayı için henüz ders eklenmedi.</div>
               ) : (
                 activeDays.map((day) => {
                   const dayItems = monthSchedule.filter(item => item.day === day);
                   return (
-                    <div key={day} className={`${currentTheme.card} rounded-2xl border ${currentTheme.border} overflow-hidden shadow-lg`}>
-                      <div className={`${currentTheme.subCard} px-4 py-2 border-b ${currentTheme.border} flex justify-between items-center`}>
-                        <span className={`font-bold text-sm ${currentTheme.text}`}>📅 {day}</span>
-                        <span className={`text-xs ${isLight ? 'text-slate-600 bg-slate-200' : 'text-slate-400 bg-slate-800'} px-2 py-0.5 rounded-full`}>{dayItems.length} Ders</span>
+                    <div key={day} className={`${activeThemeObj.card} rounded-2xl border ${activeThemeObj.border} overflow-hidden shadow-lg`}>
+                      <div className="bg-slate-950/90 px-4 py-2 border-b border-slate-800 flex justify-between items-center">
+                        <span className="font-bold text-sm text-indigo-400">📅 {day}</span>
+                        <span className="text-xs text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full">{dayItems.length} Ders</span>
                       </div>
-                      <div className={`divide-y ${isLight ? 'divide-slate-200' : 'divide-slate-700/60'}`}>
+                      <div className="divide-y divide-slate-800/60">
                         {dayItems.map((item) => (
-                          <div key={item.id} className={`p-3 md:p-4 ${isLight ? 'hover:bg-slate-50' : 'hover:bg-slate-800/50'} flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-xs`}>
+                          <div key={item.id} className="p-3 md:p-4 hover:bg-slate-800/50 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-xs">
                             <div className="space-y-1 flex-1">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className="bg-purple-900/20 text-purple-600 font-bold px-2 py-0.5 rounded border border-purple-300">{item.date}</span>
-                                <span className="bg-indigo-900/20 text-indigo-600 font-mono font-bold px-2 py-0.5 rounded border border-indigo-300">{item.startTime} - {item.endTime}</span>
+                                <span className="bg-purple-900/40 text-purple-300 font-bold px-2 py-0.5 rounded border border-purple-700">{item.date}</span>
+                                <span className="bg-indigo-900/40 text-indigo-300 font-mono font-bold px-2 py-0.5 rounded border border-indigo-700">{item.startTime} - {item.endTime}</span>
                                 {item.duration && (
-                                  <span className="bg-amber-900/25 text-amber-700 font-bold px-2 py-0.5 rounded border border-amber-300">⏱️ {item.duration}</span>
+                                  <span className="bg-amber-900/40 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-700">⏱️ {item.duration}</span>
                                 )}
-                                <span className={`font-bold text-sm ${isLight ? 'text-slate-900' : 'text-white'}`}>{item.subject}</span>
+                                <span className="font-bold text-sm text-white">{item.subject}</span>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button onClick={() => removeScheduleItem(item.id)} className="bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white px-2 py-1 rounded text-xs">Sil</button>
+                              <button onClick={() => removeScheduleItem(item.id)} className="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-2 py-1 rounded text-xs">Sil</button>
                             </div>
                           </div>
                         ))}
@@ -721,68 +533,68 @@ export default function App() {
         {/* 2. DENEMELER TABI */}
         {activeTab === 'deneme' && (
           <div className="space-y-6">
-            <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} space-y-4`}>
-              <h3 className={`text-sm font-bold ${currentTheme.text} uppercase tracking-wider`}>📈 Yeni Deneme Sonucu Ekle</h3>
+            <div className={`${activeThemeObj.card} p-6 rounded-2xl border ${activeThemeObj.border} space-y-4`}>
+              <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-wider">📈 Yeni Deneme Sonucu Ekle</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <select value={denemeType} onChange={(e) => setDenemeType(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs font-bold`}>
+                <select value={denemeType} onChange={(e) => setDenemeType(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white">
                   <option value="TYT">TYT Denemesi</option>
                   <option value="AYT">AYT Denemesi</option>
                 </select>
-                <input type="text" placeholder="Deneme Adı (Örn: 3D Yayınları TYT 1)" value={denemeTitle} onChange={(e) => setDenemeTitle(e.target.value)} className={`${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs col-span-2`} />
+                <input type="text" placeholder="Deneme Adı (Örn: 3D Yayınları TYT 1)" value={denemeTitle} onChange={(e) => setDenemeTitle(e.target.value)} className="bg-slate-950/90 border border-slate-700 rounded-xl p-2.5 text-xs col-span-2 text-white" />
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold block">{denemeType === 'TYT' ? 'Türkçe' : 'Matematik'}</span>
+                <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl space-y-2">
+                  <span className="font-bold block text-slate-300">{denemeType === 'TYT' ? 'Türkçe' : 'Matematik'}</span>
                   <div className="flex gap-1">
-                    <input type="number" placeholder="Doğru" value={scores.d1} onChange={(e) => setScores({ ...scores, d1: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
-                    <input type="number" placeholder="Yanlış" value={scores.y1} onChange={(e) => setScores({ ...scores, y1: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
+                    <input type="number" placeholder="Doğru" value={scores.d1} onChange={(e) => setScores({ ...scores, d1: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
+                    <input type="number" placeholder="Yanlış" value={scores.y1} onChange={(e) => setScores({ ...scores, y1: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
                   </div>
                 </div>
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold block">{denemeType === 'TYT' ? 'Sosyal Bilimler' : 'Fen Bilimleri'}</span>
+                <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl space-y-2">
+                  <span className="font-bold block text-slate-300">{denemeType === 'TYT' ? 'Sosyal Bilimler' : 'Fen Bilimleri'}</span>
                   <div className="flex gap-1">
-                    <input type="number" placeholder="Doğru" value={scores.d2} onChange={(e) => setScores({ ...scores, d2: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
-                    <input type="number" placeholder="Yanlış" value={scores.y2} onChange={(e) => setScores({ ...scores, y2: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
+                    <input type="number" placeholder="Doğru" value={scores.d2} onChange={(e) => setScores({ ...scores, d2: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
+                    <input type="number" placeholder="Yanlış" value={scores.y2} onChange={(e) => setScores({ ...scores, y2: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
                   </div>
                 </div>
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold block">{denemeType === 'TYT' ? 'Matematik' : 'Türk Dili ve Edebiyatı - Sosyal-1'}</span>
+                <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl space-y-2">
+                  <span className="font-bold block text-slate-300">{denemeType === 'TYT' ? 'Matematik' : 'Türk Dili ve Edebiyatı - Sosyal-1'}</span>
                   <div className="flex gap-1">
-                    <input type="number" placeholder="Doğru" value={scores.d3} onChange={(e) => setScores({ ...scores, d3: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
-                    <input type="number" placeholder="Yanlış" value={scores.y3} onChange={(e) => setScores({ ...scores, y3: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
+                    <input type="number" placeholder="Doğru" value={scores.d3} onChange={(e) => setScores({ ...scores, d3: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
+                    <input type="number" placeholder="Yanlış" value={scores.y3} onChange={(e) => setScores({ ...scores, y3: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
                   </div>
                 </div>
-                <div className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl space-y-2`}>
-                  <span className="font-bold block">{denemeType === 'TYT' ? 'Fen Bilimleri' : 'Sosyal Bilimler-2'}</span>
+                <div className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl space-y-2">
+                  <span className="font-bold block text-slate-300">{denemeType === 'TYT' ? 'Fen Bilimleri' : 'Sosyal Bilimler-2'}</span>
                   <div className="flex gap-1">
-                    <input type="number" placeholder="Doğru" value={scores.d4} onChange={(e) => setScores({ ...scores, d4: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
-                    <input type="number" placeholder="Yanlış" value={scores.y4} onChange={(e) => setScores({ ...scores, y4: e.target.value })} className="w-1/2 bg-transparent border rounded p-1" />
+                    <input type="number" placeholder="Doğru" value={scores.d4} onChange={(e) => setScores({ ...scores, d4: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
+                    <input type="number" placeholder="Yanlış" value={scores.y4} onChange={(e) => setScores({ ...scores, y4: e.target.value })} className="w-1/2 bg-slate-900 border border-slate-700 rounded p-1 text-white" />
                   </div>
                 </div>
               </div>
               <div className="flex justify-between items-center pt-2">
-                <span className="text-xs font-bold">Hesaplanan Toplam Net: <span className="text-indigo-400 font-mono text-base">{currentTotalNet.toFixed(2)}</span></span>
+                <span className="text-xs font-bold text-slate-300">Hesaplanan Toplam Net: <span className="text-indigo-400 font-mono text-base">{currentTotalNet.toFixed(2)}</span></span>
                 <button onClick={saveDeneme} className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-xs font-bold">Denemeyi Kaydet</button>
               </div>
             </div>
 
             {/* Geçmiş Denemeler Listesi */}
             <div className="space-y-3">
-              <h3 className={`text-sm font-bold ${currentTheme.text}`}>Geçmiş Deneme Sonuçları</h3>
+              <h3 className="text-sm font-bold text-indigo-400">Geçmiş Deneme Sonuçları</h3>
               {denemeHistory.length === 0 ? (
-                <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} text-center text-xs italic`}>Henüz kaydedilmiş deneme yok.</div>
+                <div className={`${activeThemeObj.card} p-6 rounded-2xl border ${activeThemeObj.border} text-center text-xs italic text-slate-400`}>Henüz kaydedilmiş deneme yok.</div>
               ) : (
                 denemeHistory.map((item) => (
-                  <div key={item.id} className={`${currentTheme.card} p-4 rounded-xl border ${currentTheme.border} flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs`}>
+                  <div key={item.id} className={`${activeThemeObj.card} p-4 rounded-xl border ${activeThemeObj.border} flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs`}>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="bg-indigo-600 text-white font-bold px-2 py-0.5 rounded">{item.type}</span>
-                        <span className="font-bold text-sm">{item.title}</span>
+                        <span className="font-bold text-sm text-white">{item.title}</span>
                         <span className="text-slate-400">({item.date})</span>
                       </div>
                       <div className="flex gap-4 pt-1 flex-wrap">
                         {item.details.map((d, idx) => (
-                          <span key={idx} className="bg-slate-800/50 px-2 py-1 rounded">
+                          <span key={idx} className="bg-slate-800 px-2 py-1 rounded text-slate-300">
                             {d.name}: <strong className="text-indigo-300 font-mono">{d.net.toFixed(2)} Net</strong>
                           </span>
                         ))}
@@ -793,7 +605,7 @@ export default function App() {
                         <span className="text-[10px] text-slate-400 block uppercase">Toplam Net</span>
                         <span className="text-base font-black font-mono text-indigo-400">{item.totalNet.toFixed(2)}</span>
                       </div>
-                      <button onClick={() => removeDeneme(item.id)} className="bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white p-2 rounded-lg">Sil</button>
+                      <button onClick={() => removeDeneme(item.id)} className="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white p-2 rounded-lg">Sil</button>
                     </div>
                   </div>
                 ))
@@ -805,14 +617,14 @@ export default function App() {
         {/* 3. POMODORO / BLOK TABI */}
         {activeTab === 'pomodoro' && (
           <div className="space-y-6 max-w-2xl mx-auto">
-            <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} text-center space-y-6 shadow-xl`}>
+            <div className={`${activeThemeObj.card} p-6 rounded-2xl border ${activeThemeObj.border} text-center space-y-6 shadow-xl`}>
               <div className="flex justify-center gap-2">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${pomodoroMode === 'work' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${pomodoroMode === 'work' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-300'}`}>
                   {pomodoroMode === 'work' ? `📚 Çalışma Etüdü (${currentBlock}/${targetBlocks})` : '☕ Dinlenme Molası'}
                 </span>
               </div>
 
-              <div className="text-6xl md:text-8xl font-black font-mono tracking-wider">
+              <div className="text-6xl md:text-8xl font-black font-mono tracking-wider text-white">
                 {formatTime(timeLeft)}
               </div>
 
@@ -825,18 +637,18 @@ export default function App() {
                 </button>
                 <button
                   onClick={() => { setIsRunning(false); setTimeLeft(pomodoroMode === 'work' ? customWorkTime * 60 : customBreakTime * 60); }}
-                  className="bg-slate-700 hover:bg-slate-600 text-white px-5 py-3 rounded-xl font-bold text-sm"
+                  className="bg-slate-800 hover:bg-slate-700 text-white px-5 py-3 rounded-xl font-bold text-sm border border-slate-700"
                 >
                   Sıfırla
                 </button>
               </div>
 
-              <div className="border-t border-slate-700/60 pt-4 space-y-3 text-left">
+              <div className="border-t border-slate-800 pt-4 space-y-3 text-left">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400">🔔 Etüt/Mola Bitiş Sesi (Seçerken Test Edebilirsiniz)</h4>
                 <select
                   value={selectedEndSound}
                   onChange={handleEndSoundChange}
-                  className={`w-full ${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs font-bold`}
+                  className="w-full bg-slate-950/90 border border-slate-700 rounded-xl p-2.5 text-xs font-bold text-white"
                 >
                   <option value="bell">Yumuşak Zil Sesi (Chime)</option>
                   <option value="digital">Dijital Alarm</option>
@@ -845,10 +657,10 @@ export default function App() {
                 <p className="text-[10px] text-slate-400">Açılır menüden bir ses seçtiğinizde, sesin nasıl çıktığını duymanız için anında çalacaktır.</p>
               </div>
 
-              <div className="border-t border-slate-700/60 pt-4 grid grid-cols-3 gap-2 text-xs">
-                <button onClick={() => applyCustomPomodoro(25, 5, 1)} className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl font-bold hover:border-indigo-500`}>25 dk Çalış / 5 dk Mola</button>
-                <button onClick={() => applyCustomPomodoro(50, 10, 1)} className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl font-bold hover:border-indigo-500`}>50 dk Çalış / 10 dk Mola</button>
-                <button onClick={() => applyCustomPomodoro(45, 15, 4)} className={`${currentTheme.subCard} border ${currentTheme.border} p-3 rounded-xl font-bold hover:border-indigo-500`}>4x 45'li Uzun Blok</button>
+              <div className="border-t border-slate-800 pt-4 grid grid-cols-3 gap-2 text-xs">
+                <button onClick={() => applyCustomPomodoro(25, 5, 1)} className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl font-bold hover:border-indigo-500 text-slate-300">25 dk Çalış / 5 dk Mola</button>
+                <button onClick={() => applyCustomPomodoro(50, 10, 1)} className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl font-bold hover:border-indigo-500 text-slate-300">50 dk Çalış / 10 dk Mola</button>
+                <button onClick={() => applyCustomPomodoro(45, 15, 4)} className="bg-slate-950/90 border border-slate-700 p-3 rounded-xl font-bold hover:border-indigo-500 text-slate-300">4x 45'li Uzun Blok</button>
               </div>
             </div>
           </div>
@@ -857,33 +669,33 @@ export default function App() {
         {/* 4. KAYNAKLAR & HOCALAR TABI */}
         {activeTab === 'kaynaklar' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} space-y-4`}>
-              <h3 className={`text-sm font-bold ${currentTheme.text} uppercase tracking-wider`}>👨‍🏫 Hoca Listesini Yönet</h3>
+            <div className={`${activeThemeObj.card} p-6 rounded-2xl border ${activeThemeObj.border} space-y-4`}>
+              <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-wider">👨‍🏫 Hoca Listesini Yönet</h3>
               <div className="flex gap-2">
-                <input type="text" placeholder="Yeni Hoca Adı ve Dersi" value={newTeacherInput} onChange={(e) => setNewTeacherInput(e.target.value)} className={`flex-1 ${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs`} />
+                <input type="text" placeholder="Yeni Hoca Adı ve Dersi" value={newTeacherInput} onChange={(e) => setNewTeacherInput(e.target.value)} className="flex-1 bg-slate-950/90 border border-slate-700 rounded-xl p-2.5 text-xs text-white" />
                 <button onClick={addCustomTeacher} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold">Ekle</button>
               </div>
               <div className="max-h-60 overflow-y-auto space-y-1">
                 {customTeachers.map((t, i) => (
-                  <div key={i} className={`flex justify-between items-center ${currentTheme.subCard} p-2 rounded-lg text-xs`}>
+                  <div key={i} className="flex justify-between items-center bg-slate-950/90 border border-slate-800/80 p-2 rounded-lg text-xs text-slate-300">
                     <span>{t}</span>
-                    <button onClick={() => removeCustomTeacher(t)} className="text-red-500 hover:underline">Sil</button>
+                    <button onClick={() => removeCustomTeacher(t)} className="text-red-400 hover:underline">Sil</button>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className={`${currentTheme.card} p-6 rounded-2xl border ${currentTheme.border} space-y-4`}>
-              <h3 className={`text-sm font-bold ${currentTheme.text} uppercase tracking-wider`}>📚 Kaynak/Kitap Listesini Yönet</h3>
+            <div className={`${activeThemeObj.card} p-6 rounded-2xl border ${activeThemeObj.border} space-y-4`}>
+              <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-wider">📚 Kaynak/Kitap Listesini Yönet</h3>
               <div className="flex gap-2">
-                <input type="text" placeholder="Yeni Kitap / Yayın Adı" value={newBookInput} onChange={(e) => setNewBookInput(e.target.value)} className={`flex-1 ${currentTheme.subCard} border ${currentTheme.border} rounded-xl p-2.5 text-xs`} />
+                <input type="text" placeholder="Yeni Kitap / Yayın Adı" value={newBookInput} onChange={(e) => setNewBookInput(e.target.value)} className="flex-1 bg-slate-950/90 border border-slate-700 rounded-xl p-2.5 text-xs text-white" />
                 <button onClick={addCustomBook} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold">Ekle</button>
               </div>
               <div className="max-h-60 overflow-y-auto space-y-1">
                 {customBooks.map((b, i) => (
-                  <div key={i} className={`flex justify-between items-center ${currentTheme.subCard} p-2 rounded-lg text-xs`}>
+                  <div key={i} className="flex justify-between items-center bg-slate-950/90 border border-slate-800/80 p-2 rounded-lg text-xs text-slate-300">
                     <span>{b}</span>
-                    <button onClick={() => removeCustomBook(b)} className="text-red-500 hover:underline">Sil</button>
+                    <button onClick={() => removeCustomBook(b)} className="text-red-400 hover:underline">Sil</button>
                   </div>
                 ))}
               </div>
