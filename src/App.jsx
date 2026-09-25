@@ -32,7 +32,6 @@ const COLOR_OPTIONS = [
   { name: 'Koyu Asalak Yeşil', class: 'bg-stone-950' },
   { name: 'Cyberpunk Koyu', class: 'bg-violet-950' },
   { name: 'Karbon', class: 'bg-zinc-900' },
-  // Eklenen 13 yeni renk seçeneğiyle toplam 25 oldu:
   { name: 'Saf Gece Siyahı', class: 'bg-black' },
   { name: 'Koyu Kırmızı Kanvas', class: 'bg-red-950' },
   { name: 'Derin Amber', class: 'bg-amber-950' },
@@ -72,7 +71,7 @@ function YksCountdownCard() {
   }, []);
 
   return (
-    <div className="bg-slate-800/95 backdrop-blur-md p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3">
+    <div className="bg-slate-800/95 backdrop-blur-md p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3 relative z-10">
       <h3 className="text-sm md:text-base font-bold text-indigo-400 uppercase tracking-wider">
         ⏳ 2027 YKS'ye Kalan Süre
       </h3>
@@ -179,7 +178,6 @@ export default function App() {
     return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
   };
 
-  // YouTube Linkine tıklama onayı
   const handleOpenYoutube = (url) => {
     if (!url) return;
     const onay = window.confirm("YouTube'a gitmek istiyor musunuz?");
@@ -188,7 +186,6 @@ export default function App() {
     }
   };
 
-  // Saatler arası farkı hesaplayan fonksiyon
   const calculateDuration = (start, end) => {
     if (!start || !end) return '';
     const [startH, startM] = start.split(':').map(Number);
@@ -315,7 +312,6 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
 
-  // Daha güzel ve yumuşak akor/zil sesi fonksiyonu (Web Audio API)
   const playNiceBellSound = () => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -397,8 +393,8 @@ export default function App() {
     <div className={`min-h-screen ${bgColor} text-white p-3 md:p-6 font-sans transition-colors duration-300 relative`}>
       <div className="max-w-7xl mx-auto space-y-6">
 
-        {/* Üst Menü */}
-        <header className="bg-slate-800/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Üst Menü - z-50 ile her zaman en üstte kalacak şekilde ayarlandı */}
+        <header className="bg-slate-800/95 backdrop-blur-md p-4 rounded-2xl border border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4 relative z-50 shadow-2xl">
           <div className="flex items-center gap-3">
             <h1 className="text-xl md:text-2xl font-bold text-indigo-400">
               ⚡ YKS Çalışma Masası <span className="italic text-sm font-normal text-slate-400 ml-2">By Yağmur</span>
@@ -411,7 +407,7 @@ export default function App() {
             <button onClick={() => setActiveTab('pomodoro')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'pomodoro' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>⏱️ Pomodoro / Blok</button>
             <button onClick={() => setActiveTab('kaynaklar')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'kaynaklar' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📚 Kaynaklar & Hocalar</button>
 
-            {/* Tema/Renk Seçici Butonu (25 Seçenekli) */}
+            {/* Tema/Renk Seçici Butonu (Açılır Menü z-50 ile üstte kalacak) */}
             <div className="relative">
               <button onClick={() => setShowColorPicker(!showColorPicker)} className="bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl text-xs font-bold border border-slate-600 flex items-center gap-1">
                 🎨 Tema
