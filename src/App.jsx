@@ -488,7 +488,6 @@ export default function App() {
       playSpecificSound(selectedEndSound);
 
       if (pomodoroMode === 'work') {
-        // Çalışma süresi doldu. Eğer son bloksa seriyi bitir, değilse molaya geç.
         if (currentBlock >= targetBlocks) {
           alert(`Tebrikler! ${targetBlocks} blokluk çalışma serisini tamamladın! 🎉`);
           setIsRunning(false);
@@ -501,7 +500,6 @@ export default function App() {
           setTimeLeft(customBreakTime * 60);
         }
       } else {
-        // Mola bitti, bir sonraki çalışma bloğuna geç
         alert(`Mola bitti! ${currentBlock + 1}. Blok Etüt Başlıyor. 💪`);
         setCurrentBlock(prev => prev + 1);
         setPomodoroMode('work');
@@ -511,10 +509,10 @@ export default function App() {
     return () => clearInterval(timer);
   }, [isRunning, timeLeft, pomodoroMode, currentBlock, targetBlocks, customWorkTime, customBreakTime, selectedEndSound]);
 
-  const applyCustomPomodoro = (workMins, breakMins, blocks = targetBlocks) => {
-    const w = Math.max(1, parseInt(workMins) || 1);
-    const b = Math.max(1, parseInt(breakMins) || 1);
-    const blk = Math.max(1, parseInt(blocks) || 1);
+  const applyCustomPomodoroInputs = () => {
+    const w = Math.max(1, parseInt(customWorkTime) || 1);
+    const b = Math.max(1, parseInt(customBreakTime) || 1);
+    const blk = Math.max(1, parseInt(targetBlocks) || 1);
     setCustomWorkTime(w);
     setCustomBreakTime(b);
     setTargetBlocks(blk);
@@ -754,6 +752,50 @@ export default function App() {
         {activeTab === 'pomodoro' && (
           <div className="space-y-6 max-w-2xl mx-auto">
             <div className={`${activeThemeObj.card} p-6 rounded-2xl border ${activeThemeObj.border} text-center space-y-6 shadow-xl`}>
+
+              {/* Kullanıcı Özelleştirme Alanı */}
+              <div className={`p-4 rounded-xl ${activeThemeObj.input} border space-y-3 text-left`}>
+                <h4 className={`text-xs font-bold uppercase tracking-wider ${activeThemeObj.accent}`}>⚙️ Süre ve Blok Ayarları</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                  <div>
+                    <label className="block text-[10px] opacity-75 mb-1 font-bold">Çalışma Süresi (dk)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={customWorkTime}
+                      onChange={(e) => setCustomWorkTime(e.target.value)}
+                      className={`w-full p-2 rounded-lg border bg-black/20 text-white`}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] opacity-75 mb-1 font-bold">Mola Süresi (dk)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={customBreakTime}
+                      onChange={(e) => setCustomBreakTime(e.target.value)}
+                      className={`w-full p-2 rounded-lg border bg-black/20 text-white`}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] opacity-75 mb-1 font-bold">Blok Sayısı (Adet)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={targetBlocks}
+                      onChange={(e) => setTargetBlocks(e.target.value)}
+                      className={`w-full p-2 rounded-lg border bg-black/20 text-white`}
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={applyCustomPomodoroInputs}
+                  className={`w-full ${activeThemeObj.primary} font-bold py-2 rounded-xl text-xs transition-all mt-2`}
+                >
+                  Ayarları Uygula ve Sıfırla
+                </button>
+              </div>
+
               <div className="flex justify-center gap-2">
                 <span className={`px-3 py-1 rounded-full text-xs font-bold ${pomodoroMode === 'work' ? activeThemeObj.primary : `${activeThemeObj.input} border`}`}>
                   {pomodoroMode === 'work' ? `📚 Çalışma Etüdü (${currentBlock}/${targetBlocks})` : '☕ Dinlenme Molası'}
@@ -791,12 +833,6 @@ export default function App() {
                   <option value="gong" className="bg-slate-900 text-white">Zen Gong Sesi</option>
                 </select>
                 <p className="text-[10px] opacity-75">Açılır menüden bir ses seçtiğinizde, sesin nasıl çıktığını duymanız için anında çalacaktır.</p>
-              </div>
-
-              <div className={`border-t ${activeThemeObj.border} pt-4 grid grid-cols-3 gap-2 text-xs`}>
-                <button onClick={() => applyCustomPomodoro(25, 5, 1)} className={`${activeThemeObj.input} border p-3 rounded-xl font-bold hover:opacity-100 opacity-80 transition-all`}>25 dk Çalış / 5 dk Mola</button>
-                <button onClick={() => applyCustomPomodoro(50, 10, 1)} className={`${activeThemeObj.input} border p-3 rounded-xl font-bold hover:opacity-100 opacity-80 transition-all`}>50 dk Çalış / 10 dk Mola</button>
-                <button onClick={() => applyCustomPomodoro(45, 15, 4)} className={`${activeThemeObj.input} border p-3 rounded-xl font-bold hover:opacity-100 opacity-80 transition-all`}>4x 45'li Uzun Blok</button>
               </div>
             </div>
           </div>
