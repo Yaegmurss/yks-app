@@ -19,6 +19,35 @@ const MONTHS = [
   'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
 ];
 
+const COLOR_OPTIONS = [
+  { name: 'Koyu Siyah/Gri', class: 'bg-slate-900' },
+  { name: 'Gece Mavisi', class: 'bg-gray-950' },
+  { name: 'Koyu Mor', class: 'bg-purple-950' },
+  { name: 'Derin İndigo', class: 'bg-indigo-950' },
+  { name: 'Zümrüt Siyahı', class: 'bg-emerald-950' },
+  { name: 'Gece Yarısı Lacivert', class: 'bg-blue-950' },
+  { name: 'Koyu Gül Kurusu', class: 'bg-rose-950' },
+  { name: 'Koyu Gece Turuncusu', class: 'bg-zinc-950' },
+  { name: 'Obsidyen', class: 'bg-neutral-900' },
+  { name: 'Koyu Asalak Yeşil', class: 'bg-stone-950' },
+  { name: 'Cyberpunk Koyu', class: 'bg-violet-950' },
+  { name: 'Karbon', class: 'bg-zinc-900' },
+  // Eklenen 13 yeni renk seçeneğiyle toplam 25 oldu:
+  { name: 'Saf Gece Siyahı', class: 'bg-black' },
+  { name: 'Koyu Kırmızı Kanvas', class: 'bg-red-950' },
+  { name: 'Derin Amber', class: 'bg-amber-950' },
+  { name: 'Koyu Turkuaz', class: 'bg-teal-950' },
+  { name: 'Koyu Camgöbeği', class: 'bg-cyan-950' },
+  { name: 'Koyu Fuşya', class: 'bg-fuchsia-950' },
+  { name: 'Koyu Pembe', class: 'bg-pink-950' },
+  { name: 'Koyu Limon', class: 'bg-lime-950' },
+  { name: 'Koyu Askeri Yeşil', class: 'bg-green-950' },
+  { name: 'Koyu Sarı Ton', class: 'bg-yellow-950' },
+  { name: 'Gümüş Gri', class: 'bg-slate-800' },
+  { name: 'Koyu Deniz Mavisi', class: 'bg-sky-950' },
+  { name: 'Gece Menekşesi', class: 'bg-purple-900' }
+];
+
 // Geri Sayım Bileşeni
 function YksCountdownCard() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -72,6 +101,7 @@ function YksCountdownCard() {
 export default function App() {
   const [activeTab, setActiveTab] = useState('program');
   const [bgColor, setBgColor] = useState(() => localStorage.getItem('yks_bgColor') || 'bg-slate-900');
+  const [showColorPicker, setShowColorPicker] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('yks_bgColor', bgColor);
@@ -149,14 +179,23 @@ export default function App() {
     return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
   };
 
-  // Saatler arası farkı hesaplayan yardımcı fonksiyon
+  // YouTube Linkine tıklama onayı
+  const handleOpenYoutube = (url) => {
+    if (!url) return;
+    const onay = window.confirm("YouTube'a gitmek istiyor musunuz?");
+    if (onay) {
+      window.open(url, '_blank');
+    }
+  };
+
+  // Saatler arası farkı hesaplayan fonksiyon
   const calculateDuration = (start, end) => {
     if (!start || !end) return '';
     const [startH, startM] = start.split(':').map(Number);
     const [endH, endM] = end.split(':').map(Number);
 
     let totalMins = (endH * 60 + endM) - (startH * 60 + startM);
-    if (totalMins < 0) totalMins += 24 * 60; // Gece yarısını aşma durumu
+    if (totalMins < 0) totalMins += 24 * 60;
 
     const hours = Math.floor(totalMins / 60);
     const minutes = totalMins % 60;
@@ -193,7 +232,7 @@ export default function App() {
       questions: formQuestions ? parseInt(formQuestions) : 0,
       startTime: formStartTime,
       endTime: formEndTime,
-      duration: durationText, // Hesaplanan süre kaydediliyor
+      duration: durationText,
       ytUrl: formYtUrl,
       embedUrl: getEmbedUrl(formYtUrl),
       status: 'pending'
@@ -276,18 +315,29 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isRunning, setIsRunning] = useState(false);
 
-  const playBeepSound = () => {
+  // Daha güzel ve yumuşak akor/zil sesi fonksiyonu (Web Audio API)
+  const playNiceBellSound = () => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.type = 'sine';
-      osc.frequency.value = 800;
-      gain.gain.value = 0.5;
-      osc.start();
-      setTimeout(() => osc.stop(), 1000);
+      const now = audioCtx.currentTime;
+
+      [523.25, 659.25, 783.99].forEach((freq, index) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + index * 0.12);
+
+        gain.gain.setValueAtTime(0, now + index * 0.12);
+        gain.gain.linearRampToValueAtTime(0.3, now + index * 0.12 + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.12 + 0.8);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now + index * 0.12);
+        osc.stop(now + index * 0.12 + 0.9);
+      });
     } catch (e) {}
   };
 
@@ -296,7 +346,7 @@ export default function App() {
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
     } else if (timeLeft === 0) {
-      playBeepSound();
+      playNiceBellSound();
 
       if (pomodoroMode === 'work') {
         if (currentBlock < targetBlocks) {
@@ -344,7 +394,7 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen ${bgColor} text-white p-3 md:p-6 font-sans transition-colors duration-300`}>
+    <div className={`min-h-screen ${bgColor} text-white p-3 md:p-6 font-sans transition-colors duration-300 relative`}>
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* Üst Menü */}
@@ -360,6 +410,24 @@ export default function App() {
             <button onClick={() => setActiveTab('deneme')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'deneme' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📈 Denemeler</button>
             <button onClick={() => setActiveTab('pomodoro')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'pomodoro' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>⏱️ Pomodoro / Blok</button>
             <button onClick={() => setActiveTab('kaynaklar')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'kaynaklar' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📚 Kaynaklar & Hocalar</button>
+
+            {/* Tema/Renk Seçici Butonu (25 Seçenekli) */}
+            <div className="relative">
+              <button onClick={() => setShowColorPicker(!showColorPicker)} className="bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl text-xs font-bold border border-slate-600 flex items-center gap-1">
+                🎨 Tema
+              </button>
+              {showColorPicker && (
+                <div className="absolute right-0 mt-2 w-56 max-h-80 overflow-y-auto bg-slate-800 border border-slate-700 rounded-xl p-2 shadow-2xl z-50 space-y-1">
+                  <span className="text-[10px] text-slate-400 font-bold block px-2 pb-1 uppercase tracking-wider">Arka Plan Rengi Seç (25 Seçenek)</span>
+                  {COLOR_OPTIONS.map((col, idx) => (
+                    <button key={idx} onClick={() => { setBgColor(col.class); setShowColorPicker(false); }} className={`w-full text-left px-2 py-1.5 rounded-lg text-xs font-medium hover:bg-slate-700 flex items-center gap-2 ${bgColor === col.class ? 'bg-indigo-600 text-white' : 'text-slate-300'}`}>
+                      <span className={`w-3 h-3 rounded-full ${col.class} border border-slate-500 inline-block shrink-0`}></span>
+                      <span className="truncate">{col.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <button onClick={resetAllData} className="bg-red-600/80 hover:bg-red-600 px-3 py-2 rounded-xl text-xs font-bold border border-red-500/50">🗑️ Sıfırla</button>
           </div>
@@ -443,11 +511,19 @@ export default function App() {
                               <div className="text-slate-400 flex flex-wrap gap-3 pt-1">
                                 <span>📖 Kaynak: <strong className="text-slate-200">{item.book}</strong></span>
                                 <span>✏️ Soru Sayısı: <strong className="text-emerald-300">{item.questions > 0 ? `${item.questions} Soru` : 'Belirtilmedi'}</strong></span>
+                                {item.ytUrl && (
+                                  <button onClick={() => handleOpenYoutube(item.ytUrl)} className="text-indigo-400 hover:text-indigo-300 font-bold underline">
+                                    ▶️ YouTube'da Aç
+                                  </button>
+                                )}
                               </div>
                             </div>
                             {item.embedUrl && (
-                              <div className="w-full md:w-64 h-36 rounded-xl overflow-hidden border border-slate-700 shrink-0">
-                                <iframe className="w-full h-full" src={item.embedUrl} title="Ders Video" allowFullScreen />
+                              <div className="w-full md:w-64 h-36 rounded-xl overflow-hidden border border-slate-700 shrink-0 cursor-pointer relative group" onClick={() => handleOpenYoutube(item.ytUrl)}>
+                                <iframe className="w-full h-full pointer-events-none" src={item.embedUrl} title="Ders Video" />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white font-bold text-xs gap-1">
+                                  ▶️ YouTube'da İzle
+                                </div>
                               </div>
                             )}
                             <div className="flex items-center gap-2 self-end md:self-center">
