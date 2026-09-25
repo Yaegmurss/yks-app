@@ -77,6 +77,29 @@ export default function App() {
     localStorage.setItem('yks_bgColor', bgColor);
   }, [bgColor]);
 
+  // Özel Hocalar Yönetimi
+  const [customTeachers, setCustomTeachers] = useState(() => {
+    const saved = localStorage.getItem('yks_customTeachers');
+    return saved ? JSON.parse(saved) : INITIAL_TEACHERS;
+  });
+  const [newTeacherInput, setNewTeacherInput] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('yks_customTeachers', JSON.stringify(customTeachers));
+  }, [customTeachers]);
+
+  const addCustomTeacher = () => {
+    if (!newTeacherInput.trim()) return;
+    if (customTeachers.includes(newTeacherInput.trim())) return alert('Bu hoca zaten listede var.');
+    setCustomTeachers([...customTeachers, newTeacherInput.trim()]);
+    setNewTeacherInput('');
+  };
+
+  const removeCustomTeacher = (teacherName) => {
+    setCustomTeachers(customTeachers.filter(t => t !== teacherName));
+  };
+
+  // Özel Kaynaklar Yönetimi
   const [customBooks, setCustomBooks] = useState(() => {
     const saved = localStorage.getItem('yks_customBooks');
     return saved ? JSON.parse(saved) : INITIAL_BOOKS;
@@ -112,7 +135,7 @@ export default function App() {
   const [formDate, setFormDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [formDay, setFormDay] = useState('Pazartesi');
   const [formSubject, setFormSubject] = useState('Matematik');
-  const [formTeacher, setFormTeacher] = useState(INITIAL_TEACHERS[0]);
+  const [formTeacher, setFormTeacher] = useState(customTeachers[0] || '');
   const [formBook, setFormBook] = useState('');
   const [formStartTime, setFormStartTime] = useState('09:00');
   const [formDuration, setFormDuration] = useState('60');
@@ -129,7 +152,7 @@ export default function App() {
   const handleYtUrlChange = (val) => {
     setFormYtUrl(val);
     const lowerVal = val.toLowerCase();
-    const foundTeacher = INITIAL_TEACHERS.find(t => lowerVal.includes(t.split(' ')[0].toLowerCase()));
+    const foundTeacher = customTeachers.find(t => lowerVal.includes(t.split(' ')[0].toLowerCase()));
     if (foundTeacher) setFormTeacher(foundTeacher);
   };
 
@@ -223,6 +246,7 @@ export default function App() {
       setSchedule([]);
       setDenemeHistory([]);
       setCustomBooks(INITIAL_BOOKS);
+      setCustomTeachers(INITIAL_TEACHERS);
       alert('Sıfırlandı.');
     }
   };
@@ -306,30 +330,25 @@ export default function App() {
     <div className={`min-h-screen ${bgColor} text-white p-3 md:p-6 font-sans transition-colors duration-300`}>
       <div className="max-w-7xl mx-auto space-y-6">
 
-        {/* 🌟 By Yağmur İmzası (En Üstte) */}
-        <div className="text-right px-2">
-          <span className="italic text-xs text-indigo-400 font-medium tracking-wide">
-            By Yağmur
-          </span>
-        </div>
-
         {/* Üst Menü */}
         <header className="bg-slate-800/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl md:text-2xl font-bold text-indigo-400">⚡ YKS Çalışma Masası</h1>
+            <h1 className="text-xl md:text-2xl font-bold text-indigo-400">
+              ⚡ YKS Çalışma Masası <span className="italic text-sm font-normal text-slate-400 ml-2">By Yağmur</span>
+            </h1>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             <button onClick={() => setActiveTab('program')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'program' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📊 Program</button>
             <button onClick={() => setActiveTab('deneme')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'deneme' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📈 Denemeler</button>
             <button onClick={() => setActiveTab('pomodoro')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'pomodoro' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>⏱️ Pomodoro / Blok</button>
-            <button onClick={() => setActiveTab('kaynaklar')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'kaynaklar' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📚 Kaynaklar</button>
+            <button onClick={() => setActiveTab('kaynaklar')} className={`px-4 py-2 rounded-xl text-xs font-bold ${activeTab === 'kaynaklar' ? 'bg-indigo-600' : 'bg-slate-900 text-slate-400'}`}>📚 Kaynaklar & Hocalar</button>
 
             <button onClick={resetAllData} className="bg-red-600/80 hover:bg-red-600 px-3 py-2 rounded-xl text-xs font-bold border border-red-500/50">🗑️ Sıfırla</button>
           </div>
         </header>
 
-        {/* YKS Geri Sayım Kartı Eklendi */}
+        {/* YKS Geri Sayım Kartı */}
         <YksCountdownCard />
 
         {/* 1. DERS PROGRAMI TABI */}
@@ -361,7 +380,7 @@ export default function App() {
                   <option value="Matematik">Matematik</option><option value="Geometri">Geometri</option><option value="Fizik">Fizik</option><option value="Kimya">Kimya</option><option value="Biyoloji">Biyoloji</option><option value="Türkçe">Türkçe</option><option value="Tarih">Tarih</option><option value="Coğrafya">Coğrafya</option>
                 </select>
                 <select value={formTeacher} onChange={(e) => setFormTeacher(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2">
-                  {INITIAL_TEACHERS.map(t => <option key={t} value={t}>{t}</option>)}
+                  {customTeachers.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
                 <input type="text" placeholder="Kaynak Yazın" value={formBook} onChange={(e) => setFormBook(e.target.value)} list="books-list" className="bg-slate-900 border border-slate-700 rounded-lg p-2" />
                 <datalist id="books-list">{customBooks.map((b, i) => <option key={i} value={b} />)}</datalist>
@@ -475,12 +494,11 @@ export default function App() {
           </div>
         )}
 
-        {/* 3. ÖZEL SÜRELİ & BLOK POMODORO TABI */}
+        {/* 3. POMODORO TABI */}
         {activeTab === 'pomodoro' && (
           <div className="bg-slate-800/90 p-6 md:p-8 rounded-2xl border border-slate-700 max-w-2xl mx-auto space-y-6 text-center">
             <h2 className="text-xl font-bold text-indigo-400">⏱️ Esnek Süreli & Bloklu Pomodoro</h2>
 
-            {/* Süre ve Blok Ayarlama */}
             <div className="bg-slate-900/80 p-4 rounded-xl border border-slate-700 space-y-3">
               <span className="text-xs text-slate-400 font-bold block uppercase tracking-wider">⚙️ Çalışma Ayarları</span>
               <div className="flex flex-wrap justify-center items-center gap-4 text-xs">
@@ -498,7 +516,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Hazır Blok Butonları */}
               <div className="flex flex-wrap justify-center gap-2 pt-1">
                 <button onClick={() => applyCustomPomodoro(25, 5, 1)} className="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-1 rounded-lg text-[11px]">⚡ Tekil (25/5 dk)</button>
                 <button onClick={() => applyCustomPomodoro(50, 10, 2)} className="bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-700 px-3 py-1 rounded-lg text-[11px] font-bold text-indigo-300">🧱 2 Blok (50/10 dk)</button>
@@ -506,19 +523,16 @@ export default function App() {
               </div>
             </div>
 
-            {/* Durum Bilgisi */}
             <div className="flex justify-center items-center gap-3">
               <span className={`px-3 py-1 rounded-full text-xs font-bold ${pomodoroMode === 'work' ? 'bg-indigo-600' : 'bg-emerald-600'}`}>
                 {pomodoroMode === 'work' ? `🧠 ÇALIŞMA (${currentBlock}/${targetBlocks}. BLOK)` : '☕ MOLA'}
               </span>
             </div>
 
-            {/* Sayaç Ekranı */}
             <div className="text-6xl md:text-7xl font-mono font-extrabold tracking-widest text-indigo-300 bg-slate-900/90 py-8 rounded-3xl border border-slate-700 shadow-inner">
               {formatTime(timeLeft)}
             </div>
 
-            {/* Kontroller */}
             <div className="flex justify-center gap-4">
               <button onClick={() => setIsRunning(!isRunning)} className={`px-8 py-3 rounded-xl font-bold text-sm ${isRunning ? 'bg-amber-600 hover:bg-amber-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}>
                 {isRunning ? '⏸️ Duraklat' : '▶️ Başlat'}
@@ -530,21 +544,41 @@ export default function App() {
           </div>
         )}
 
-        {/* 4. KAYNAK YÖNETİMİ TABI */}
+        {/* 4. KAYNAKLAR & HOCALAR YÖNETİMİ TABI */}
         {activeTab === 'kaynaklar' && (
-          <div className="bg-slate-800/90 p-6 rounded-2xl border border-slate-700 space-y-6">
-            <h2 className="text-lg font-bold text-emerald-400">📚 Kaynak Yönetimi</h2>
-            <div className="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700 max-w-md">
-              <input type="text" value={newBookInput} onChange={(e) => setNewBookInput(e.target.value)} placeholder="Yeni Yayın Ekle..." className="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs flex-1 text-white" />
-              <button onClick={addCustomBook} className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">➕ Ekle</button>
+          <div className="space-y-8">
+            {/* Kaynaklar Bölümü */}
+            <div className="bg-slate-800/90 p-6 rounded-2xl border border-slate-700 space-y-6">
+              <h2 className="text-lg font-bold text-emerald-400">📚 Kaynak Yönetimi</h2>
+              <div className="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700 max-w-md">
+                <input type="text" value={newBookInput} onChange={(e) => setNewBookInput(e.target.value)} placeholder="Yeni Yayın Ekle..." className="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs flex-1 text-white" />
+                <button onClick={addCustomBook} className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold">➕ Ekle</button>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {customBooks.map((b, i) => (
+                  <div key={i} className="bg-slate-900 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 font-medium flex justify-between items-center">
+                    <span className="truncate pr-2">{b}</span>
+                    <button onClick={() => removeCustomBook(b)} className="text-slate-500 hover:text-red-400 text-sm font-bold">🗑️</button>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {customBooks.map((b, i) => (
-                <div key={i} className="bg-slate-900 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 font-medium flex justify-between items-center">
-                  <span className="truncate pr-2">{b}</span>
-                  <button onClick={() => removeCustomBook(b)} className="text-slate-500 hover:text-red-400 text-sm font-bold">🗑️</button>
-                </div>
-              ))}
+
+            {/* Hocalar Bölümü */}
+            <div className="bg-slate-800/90 p-6 rounded-2xl border border-slate-700 space-y-6">
+              <h2 className="text-lg font-bold text-indigo-400">👨‍🏫 Hoca Yönetimi</h2>
+              <div className="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700 max-w-md">
+                <input type="text" value={newTeacherInput} onChange={(e) => setNewTeacherInput(e.target.value)} placeholder="Örn: Hoca Adı (Ders)" className="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs flex-1 text-white" />
+                <button onClick={addCustomTeacher} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-bold">➕ Hoca Ekle</button>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {customTeachers.map((t, i) => (
+                  <div key={i} className="bg-slate-900 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 font-medium flex justify-between items-center">
+                    <span className="truncate pr-2">{t}</span>
+                    <button onClick={() => removeCustomTeacher(t)} className="text-slate-500 hover:text-red-400 text-sm font-bold">🗑️</button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
