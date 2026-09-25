@@ -19,6 +19,56 @@ const MONTHS = [
   'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
 ];
 
+// Geri Sayım Bileşeni
+function YksCountdownCard() {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const targetDate = new Date('June 19, 2027 10:15:00').getTime();
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        setTimeLeft({ days, hours, minutes, seconds });
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="bg-slate-800/90 backdrop-blur-md p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3">
+      <h3 className="text-sm md:text-base font-bold text-indigo-400 uppercase tracking-wider">
+        ⏳ 2027 YKS'ye Kalan Süre
+      </h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto">
+        <div className="bg-slate-900/90 border border-slate-700/80 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-white block">{timeLeft.days}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Gün</span>
+        </div>
+        <div className="bg-slate-900/90 border border-slate-700/80 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-indigo-300 block">{timeLeft.hours}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Saat</span>
+        </div>
+        <div className="bg-slate-900/90 border border-slate-700/80 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-purple-300 block">{timeLeft.minutes}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Dakika</span>
+        </div>
+        <div className="bg-slate-900/90 border border-slate-700/80 p-3 rounded-xl">
+          <span className="text-2xl md:text-3xl font-black font-mono text-emerald-300 block">{timeLeft.seconds}</span>
+          <span className="text-xs text-slate-400 font-bold uppercase">Saniye</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('program');
   const [bgColor, setBgColor] = useState(() => localStorage.getItem('yks_bgColor') || 'bg-slate-900');
@@ -27,7 +77,6 @@ export default function App() {
     localStorage.setItem('yks_bgColor', bgColor);
   }, [bgColor]);
 
-  // Kaynak Yönetimi
   const [customBooks, setCustomBooks] = useState(() => {
     const saved = localStorage.getItem('yks_customBooks');
     return saved ? JSON.parse(saved) : INITIAL_BOOKS;
@@ -49,7 +98,6 @@ export default function App() {
     setCustomBooks(customBooks.filter(b => b !== bookName));
   };
 
-  // Ders Programı
   const [selectedMonth, setSelectedMonth] = useState('Eylül');
   const [schedule, setSchedule] = useState(() => {
     const saved = localStorage.getItem('yks_schedule');
@@ -60,7 +108,6 @@ export default function App() {
     localStorage.setItem('yks_schedule', JSON.stringify(schedule));
   }, [schedule]);
 
-  // Form State'leri
   const [formMonth, setFormMonth] = useState('Eylül');
   const [formDate, setFormDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [formDay, setFormDay] = useState('Pazartesi');
@@ -126,7 +173,6 @@ export default function App() {
     setSchedule(schedule.filter(item => item.id !== id));
   };
 
-  // Deneme State'leri
   const [denemeType, setDenemeType] = useState('TYT');
   const [denemeTitle, setDenemeTitle] = useState('');
   const [scores, setScores] = useState({ d1: '', y1: '', d2: '', y2: '', d3: '', y3: '', d4: '', y4: '' });
@@ -181,7 +227,6 @@ export default function App() {
     }
   };
 
-  // Blok ve Esnek Pomodoro
   const [customWorkTime, setCustomWorkTime] = useState(25);
   const [customBreakTime, setCustomBreakTime] = useState(5);
   const [targetBlocks, setTargetBlocks] = useState(1);
@@ -276,6 +321,9 @@ export default function App() {
             <button onClick={resetAllData} className="bg-red-600/80 hover:bg-red-600 px-3 py-2 rounded-xl text-xs font-bold border border-red-500/50">🗑️ Sıfırla</button>
           </div>
         </header>
+
+        {/* YKS Geri Sayım Kartı Eklendi */}
+        <YksCountdownCard />
 
         {/* 1. DERS PROGRAMI TABI */}
         {activeTab === 'program' && (
