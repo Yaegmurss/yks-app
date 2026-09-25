@@ -43,7 +43,7 @@ function YksCountdownCard() {
   }, []);
 
   return (
-    <div className="bg-slate-800/90 backdrop-blur-md p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3">
+    <div className="bg-slate-800/95 backdrop-blur-md p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3">
       <h3 className="text-sm md:text-base font-bold text-indigo-400 uppercase tracking-wider">
         ⏳ 2027 YKS'ye Kalan Süre
       </h3>
@@ -137,16 +137,33 @@ export default function App() {
   const [formSubject, setFormSubject] = useState('Matematik');
   const [formTeacher, setFormTeacher] = useState(customTeachers[0] || '');
   const [formBook, setFormBook] = useState('');
+  const [formQuestions, setFormQuestions] = useState('');
   const [formStartTime, setFormStartTime] = useState('09:00');
-  const [formDuration, setFormDuration] = useState('60');
+  const [formEndTime, setFormEndTime] = useState('10:00');
   const [formYtUrl, setFormYtUrl] = useState('');
-  const [formYtSpeed, setFormYtSpeed] = useState('1');
 
   const getEmbedUrl = (url) => {
     if (!url) return null;
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
+  };
+
+  // Saatler arası farkı hesaplayan yardımcı fonksiyon
+  const calculateDuration = (start, end) => {
+    if (!start || !end) return '';
+    const [startH, startM] = start.split(':').map(Number);
+    const [endH, endM] = end.split(':').map(Number);
+
+    let totalMins = (endH * 60 + endM) - (startH * 60 + startM);
+    if (totalMins < 0) totalMins += 24 * 60; // Gece yarısını aşma durumu
+
+    const hours = Math.floor(totalMins / 60);
+    const minutes = totalMins % 60;
+
+    if (hours > 0 && minutes > 0) return `${hours} saat ${minutes} dk`;
+    if (hours > 0) return `${hours} saat`;
+    return `${minutes} dk`;
   };
 
   const handleYtUrlChange = (val) => {
@@ -157,14 +174,13 @@ export default function App() {
   };
 
   const addScheduleItem = () => {
-    const rawDuration = parseFloat(formDuration) || 0;
-    const speed = parseFloat(formYtSpeed) || 1;
-    const netVideoMinutes = Math.round(rawDuration / speed);
     const usedBook = formBook.trim() || 'Genel Kaynak';
 
     if (!customBooks.includes(usedBook)) {
       setCustomBooks([...customBooks, usedBook]);
     }
+
+    const durationText = calculateDuration(formStartTime, formEndTime);
 
     const newItem = {
       id: Date.now(),
@@ -174,11 +190,11 @@ export default function App() {
       subject: formSubject,
       teacher: formTeacher,
       book: usedBook,
+      questions: formQuestions ? parseInt(formQuestions) : 0,
       startTime: formStartTime,
-      duration: rawDuration,
+      endTime: formEndTime,
+      duration: durationText, // Hesaplanan süre kaydediliyor
       ytUrl: formYtUrl,
-      ytSpeed: speed,
-      netDuration: netVideoMinutes,
       embedUrl: getEmbedUrl(formYtUrl),
       status: 'pending'
     };
@@ -186,6 +202,7 @@ export default function App() {
     setSchedule([...schedule, newItem]);
     setFormYtUrl('');
     setFormBook('');
+    setFormQuestions('');
   };
 
   const toggleItemStatus = (id, newStatus) => {
@@ -375,7 +392,14 @@ export default function App() {
                 <select value={formDay} onChange={(e) => setFormDay(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2">
                   {DAYS.map(d => <option key={d} value={d}>{d}</option>)}
                 </select>
-                <input type="time" value={formStartTime} onChange={(e) => setFormStartTime(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2" />
+                <div className="flex items-center gap-1 bg-slate-900 border border-slate-700 rounded-lg p-1">
+                  <span className="text-[10px] text-slate-400 pl-1">Başla:</span>
+                  <input type="time" value={formStartTime} onChange={(e) => setFormStartTime(e.target.value)} className="bg-transparent text-white w-full outline-none text-xs" />
+                </div>
+                <div className="flex items-center gap-1 bg-slate-900 border border-slate-700 rounded-lg p-1">
+                  <span className="text-[10px] text-slate-400 pl-1">Bitiş:</span>
+                  <input type="time" value={formEndTime} onChange={(e) => setFormEndTime(e.target.value)} className="bg-transparent text-white w-full outline-none text-xs" />
+                </div>
                 <select value={formSubject} onChange={(e) => setFormSubject(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2">
                   <option value="Matematik">Matematik</option><option value="Geometri">Geometri</option><option value="Fizik">Fizik</option><option value="Kimya">Kimya</option><option value="Biyoloji">Biyoloji</option><option value="Türkçe">Türkçe</option><option value="Tarih">Tarih</option><option value="Coğrafya">Coğrafya</option>
                 </select>
@@ -384,11 +408,8 @@ export default function App() {
                 </select>
                 <input type="text" placeholder="Kaynak Yazın" value={formBook} onChange={(e) => setFormBook(e.target.value)} list="books-list" className="bg-slate-900 border border-slate-700 rounded-lg p-2" />
                 <datalist id="books-list">{customBooks.map((b, i) => <option key={i} value={b} />)}</datalist>
-                <input type="number" placeholder="Süre (dk)" value={formDuration} onChange={(e) => setFormDuration(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2" />
+                <input type="number" placeholder="Soru Sayısı" value={formQuestions} onChange={(e) => setFormQuestions(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2" />
                 <input type="text" placeholder="YouTube Linki" value={formYtUrl} onChange={(e) => handleYtUrlChange(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2 col-span-2 md:col-span-1" />
-                <select value={formYtSpeed} onChange={(e) => setFormYtSpeed(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg p-2">
-                  <option value="1">1.0x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2">2.0x</option>
-                </select>
               </div>
               <button onClick={addScheduleItem} className="w-full bg-indigo-600 hover:bg-indigo-700 font-bold py-2 rounded-xl text-xs">Listeye Ekle</button>
             </div>
@@ -410,15 +431,18 @@ export default function App() {
                         {dayItems.map((item) => (
                           <div key={item.id} className="p-3 md:p-4 hover:bg-slate-800/50 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-xs">
                             <div className="space-y-1 flex-1">
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 flex-wrap">
                                 <span className="bg-purple-950 text-purple-300 font-bold px-2 py-0.5 rounded border border-purple-800/50">{item.date}</span>
-                                <span className="bg-indigo-950 text-indigo-300 font-mono font-bold px-2 py-0.5 rounded border border-indigo-800/50">{item.startTime}</span>
+                                <span className="bg-indigo-950 text-indigo-300 font-mono font-bold px-2 py-0.5 rounded border border-indigo-800/50">{item.startTime} - {item.endTime}</span>
+                                {item.duration && (
+                                  <span className="bg-amber-950 text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-800/50">⏱️ {item.duration}</span>
+                                )}
                                 <span className="font-bold text-sm text-white">{item.subject}</span>
                                 <span className="text-slate-400">({item.teacher})</span>
                               </div>
                               <div className="text-slate-400 flex flex-wrap gap-3 pt-1">
                                 <span>📖 Kaynak: <strong className="text-slate-200">{item.book}</strong></span>
-                                <span>⏱️ Süre: <strong className="text-slate-200">{item.duration} dk</strong></span>
+                                <span>✏️ Soru Sayısı: <strong className="text-emerald-300">{item.questions > 0 ? `${item.questions} Soru` : 'Belirtilmedi'}</strong></span>
                               </div>
                             </div>
                             {item.embedUrl && (
@@ -568,10 +592,10 @@ export default function App() {
             <div className="bg-slate-800/90 p-6 rounded-2xl border border-slate-700 space-y-6">
               <h2 className="text-lg font-bold text-indigo-400">👨‍🏫 Hoca Yönetimi</h2>
               <div className="flex gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700 max-w-md">
-                <input type="text" value={newTeacherInput} onChange={(e) => setNewTeacherInput(e.target.value)} placeholder="Örn: Hoca Adı (Ders)" className="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs flex-1 text-white" />
-                <button onClick={addCustomTeacher} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-bold">➕ Hoca Ekle</button>
+                <input type="text" value={newTeacherInput} onChange={(e) => setNewTeacherInput(e.target.value)} placeholder="Örn: Ahmet Hoca (Matematik)" className="bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs flex-1 text-white" />
+                <button onClick={addCustomTeacher} className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-bold">➕ Ekle</button>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {customTeachers.map((t, i) => (
                   <div key={i} className="bg-slate-900 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 font-medium flex justify-between items-center">
                     <span className="truncate pr-2">{t}</span>
