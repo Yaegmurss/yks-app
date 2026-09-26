@@ -98,12 +98,7 @@ const THEMES = [
     primary: 'bg-red-600 hover:bg-red-700 text-white', accent: 'text-red-400',
     border: 'border-red-950/50', input: 'bg-slate-950/90 text-red-100 border-red-900'
   },
-  {
-    id: 'cotton-candy', name: 'Pamuk Şeker',
-    bg: 'bg-pink-50/80', card: 'bg-white/90 text-sky-900',
-    primary: 'bg-pink-500 hover:bg-pink-600 text-white', accent: 'text-pink-600',
-    border: 'border-pink-200', input: 'bg-pink-50/50 text-sky-900 border-pink-300'
-  },
+
   {
   id: 'cotton-candy', name: 'Pamuk Şeker',
   bg: 'bg-pink-950/20', card: 'bg-pink-950/40 text-pink-100',
