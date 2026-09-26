@@ -63,6 +63,54 @@ const THEMES = [
     border: 'border-cyan-900/50', input: 'bg-cyan-950/90 text-cyan-100 border-cyan-800'
   },
   {
+  id: 'rose', name: 'Yakut',
+  bg: 'bg-rose-950/40', card: 'bg-rose-950/80 text-rose-100',
+  primary: 'bg-rose-600 hover:bg-rose-700 text-white', accent: 'text-rose-300',
+  border: 'border-rose-900/50', input: 'bg-rose-950/90 text-rose-100 border-rose-800'
+},
+{
+  id: 'green', name: 'Orman',
+  bg: 'bg-emerald-950/40', card: 'bg-emerald-950/80 text-emerald-100',
+  primary: 'bg-emerald-600 hover:bg-emerald-700 text-white', accent: 'text-emerald-300',
+  border: 'border-emerald-900/50', input: 'bg-emerald-950/90 text-emerald-100 border-emerald-800'
+},
+{
+  id: 'teal', name: 'Turkuaz',
+  bg: 'bg-teal-950/40', card: 'bg-teal-950/80 text-teal-100',
+  primary: 'bg-teal-600 hover:bg-teal-700 text-white', accent: 'text-teal-300',
+  border: 'border-teal-900/50', input: 'bg-teal-950/90 text-teal-100 border-teal-800'
+},
+{
+  id: 'sky-light', name: 'Gökyüzü',
+  bg: 'bg-sky-50/80', card: 'bg-white/90 text-sky-900',
+  primary: 'bg-sky-500 hover:bg-sky-600 text-white', accent: 'text-sky-600',
+  border: 'border-sky-200', input: 'bg-sky-50/50 text-sky-900 border-sky-300'
+},
+{
+  id: 'cyber-pink', name: 'Neon Pembe',
+  bg: 'bg-pink-950/40', card: 'bg-pink-950/80 text-pink-100',
+  primary: 'bg-pink-600 hover:bg-pink-700 text-white', accent: 'text-pink-300',
+  border: 'border-pink-900/50', input: 'bg-pink-950/90 text-pink-100 border-pink-800'
+},
+{
+  id: 'royal-red', name: 'Kraliyet Kırmızısı',
+  bg: 'bg-slate-950/40', card: 'bg-slate-900/80 text-red-100',
+  primary: 'bg-red-600 hover:bg-red-700 text-white', accent: 'text-red-400',
+  border: 'border-red-950/50', input: 'bg-slate-950/90 text-red-100 border-red-900'
+},
+{
+  id: 'cotton-candy', name: 'Pamuk Şeker',
+  bg: 'bg-pink-50/80', card: 'bg-white/90 text-sky-900',
+  primary: 'bg-pink-500 hover:bg-pink-600 text-white', accent: 'text-pink-600',
+  border: 'border-pink-200', input: 'bg-pink-50/50 text-sky-900 border-pink-300'
+},
+{
+  id: 'crimson-blue', name: 'Karmen Mavi',
+  bg: 'bg-red-950/40', card: 'bg-red-950/80 text-red-100',
+  primary: 'bg-blue-600 hover:bg-blue-700 text-white', accent: 'text-blue-300',
+  border: 'border-red-900/50', input: 'bg-red-950/90 text-red-100 border-red-800'
+},
+  {
     id: 'blue', name: 'Okyanus',
     bg: 'bg-blue-950/40', card: 'bg-blue-950/80 text-blue-100',
     primary: 'bg-blue-600 hover:bg-blue-700 text-white', accent: 'text-blue-300',
@@ -86,12 +134,19 @@ const THEMES = [
     primary: 'bg-fuchsia-600 hover:bg-fuchsia-700 text-white', accent: 'text-fuchsia-300',
     border: 'border-fuchsia-900/50', input: 'bg-fuchsia-950/90 text-fuchsia-100 border-fuchsia-800'
   },
-  {
-    id: 'pink', name: 'Pastel Pembe',
-    bg: 'bg-pink-950/40', card: 'bg-pink-950/80 text-pink-100',
-    primary: 'bg-pink-600 hover:bg-pink-700 text-white', accent: 'text-pink-300',
-    border: 'border-pink-900/50', input: 'bg-pink-950/90 text-pink-100 border-pink-800'
-  },
+{
+  id: 'pink', name: 'Pastel Pembe',
+  bg: 'bg-pink-50/80', card: 'bg-white/90 text-pink-950',
+  primary: 'bg-pink-500 hover:bg-pink-600 text-white', accent: 'text-pink-600',
+  border: 'border-pink-200', input: 'bg-pink-50/50 text-pink-950 border-pink-300'
+},
+{
+  id: 'blue', name: 'Pastel Mavi',
+  bg: 'bg-blue-50/80', card: 'bg-white/90 text-blue-950',
+  primary: 'bg-blue-500 hover:bg-blue-600 text-white', accent: 'text-blue-600',
+  border: 'border-blue-200', input: 'bg-blue-50/50 text-blue-950 border-blue-300'
+},
+
   {
     id: 'teal', name: 'Koyu Teal',
     bg: 'bg-teal-950/40', card: 'bg-teal-950/80 text-teal-100',
@@ -110,12 +165,12 @@ const THEMES = [
     primary: 'bg-lime-600 hover:bg-lime-700 text-zinc-950 font-bold', accent: 'text-lime-300',
     border: 'border-lime-900/50', input: 'bg-lime-950/90 text-lime-100 border-lime-800'
   },
-  {
-    id: 'yellow', name: 'Pastel Sarı',
-    bg: 'bg-yellow-950/40', card: 'bg-yellow-950/80 text-yellow-100',
-    primary: 'bg-yellow-600 hover:bg-yellow-700 text-zinc-950 font-bold', accent: 'text-yellow-300',
-    border: 'border-yellow-900/50', input: 'bg-yellow-950/90 text-yellow-100 border-yellow-800'
-  },
+ {
+  id: 'pastel-yellow', name: 'Pastel Sarı',
+  bg: 'bg-yellow-50/80', card: 'bg-white/90 text-yellow-950',
+  primary: 'bg-yellow-500 hover:bg-yellow-600 text-white', accent: 'text-yellow-600',
+  border: 'border-yellow-200', input: 'bg-yellow-50/50 text-yellow-950 border-yellow-300'
+}
   {
     id: 'orange', name: 'Turuncu Akşam',
     bg: 'bg-orange-950/40', card: 'bg-orange-950/80 text-orange-100',
@@ -141,35 +196,65 @@ const THEMES = [
     border: 'border-neutral-800', input: 'bg-neutral-950/90 text-white border-neutral-700'
   },
   {
-    id: 'pastel1', name: 'Pastel Lavanta',
+  id: 'pastel-lavender', name: 'Pastel Lavanta',
+  bg: 'bg-purple-50/80', card: 'bg-white/90 text-purple-950',
+  primary: 'bg-purple-500 hover:bg-purple-600 text-white', accent: 'text-purple-600',
+  border: 'border-purple-200', input: 'bg-purple-50/50 text-purple-950 border-purple-300'
+},
+  {
+    id: 'pastel1', name: 'Pastel Lavanta(Koyu)',
     bg: 'bg-purple-950/20', card: 'bg-slate-900/90 text-purple-100',
     primary: 'bg-purple-500 hover:bg-purple-600 text-white', accent: 'text-purple-300',
     border: 'border-purple-900/30', input: 'bg-slate-950 text-purple-100 border-purple-900/40'
   },
   {
-    id: 'pastel2', name: 'Pastel Mint',
+    id: 'pastel2', name: 'Pastel Mint(Koyu)',
     bg: 'bg-teal-950/20', card: 'bg-slate-900/90 text-teal-100',
     primary: 'bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold', accent: 'text-teal-300',
     border: 'border-teal-900/30', input: 'bg-slate-950 text-teal-100 border-teal-900/40'
   },
   {
-    id: 'pastel3', name: 'Pastel Şeftali',
+  id: 'pastel-mint', name: 'Pastel Mint',
+  bg: 'bg-emerald-50/80', card: 'bg-white/90 text-emerald-950',
+  primary: 'bg-emerald-500 hover:bg-emerald-600 text-white', accent: 'text-emerald-600',
+  border: 'border-emerald-200', input: 'bg-emerald-50/50 text-emerald-950 border-emerald-300'
+},
+{
+  id: 'pastel-peach', name: 'Pastel Şeftali',
+  bg: 'bg-orange-50/80', card: 'bg-white/90 text-orange-950',
+  primary: 'bg-orange-500 hover:bg-orange-600 text-white', accent: 'text-orange-600',
+  border: 'border-orange-200', input: 'bg-orange-50/50 text-orange-950 border-orange-300'
+},
+  {
+    id: 'pastel3', name: 'Pastel Şeftali(Koyu)',
     bg: 'bg-orange-950/20', card: 'bg-slate-900/90 text-orange-100',
     primary: 'bg-orange-500 hover:bg-orange-600 text-white', accent: 'text-orange-300',
     border: 'border-orange-900/30', input: 'bg-slate-950 text-orange-100 border-orange-900/40'
   },
   {
-    id: 'pastel4', name: 'Pastel Lila',
+    id: 'pastel4', name: 'Pastel Lila(Koyu)',
     bg: 'bg-indigo-950/20', card: 'bg-slate-900/90 text-indigo-100',
     primary: 'bg-indigo-500 hover:bg-indigo-600 text-white', accent: 'text-indigo-300',
     border: 'border-indigo-900/30', input: 'bg-slate-950 text-indigo-100 border-indigo-900/40'
   },
   {
-    id: 'pastel5', name: 'Yumuşak Krem',
-    bg: 'bg-zinc-900', card: 'bg-zinc-800/95 text-amber-100',
-    primary: 'bg-amber-700 hover:bg-amber-800 text-white', accent: 'text-amber-300',
-    border: 'border-zinc-700', input: 'bg-zinc-950 text-amber-100 border-zinc-700'
-  }
+  id: 'pastel-lilac', name: 'Pastel Lila',
+  bg: 'bg-violet-50/80', card: 'bg-white/90 text-violet-950',
+  primary: 'bg-violet-500 hover:bg-violet-600 text-white', accent: 'text-violet-600',
+  border: 'border-violet-200', input: 'bg-violet-50/50 text-violet-950 border-violet-300'
+},
+  {
+  id: 'soft-cream', name: 'Yumuşak Krem',
+  bg: 'bg-amber-50/60', card: 'bg-stone-50/90 text-stone-900',
+  primary: 'bg-amber-600 hover:bg-amber-700 text-white', accent: 'text-amber-700',
+  border: 'border-amber-200/80', input: 'bg-white text-stone-900 border-amber-200'
+},
+{
+  id: 'deep-ocean', name: 'Koyu Deniz Mavisi',
+  bg: 'bg-cyan-950/40', card: 'bg-cyan-950/80 text-cyan-100',
+  primary: 'bg-cyan-600 hover:bg-cyan-700 text-white', accent: 'text-cyan-300',
+  border: 'border-cyan-900/50', input: 'bg-cyan-950/90 text-cyan-100 border-cyan-800'
+},
 ];
 
 function YksCountdownCard({ theme }) {
