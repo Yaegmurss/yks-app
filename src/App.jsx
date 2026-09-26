@@ -105,6 +105,12 @@ const THEMES = [
     border: 'border-pink-200', input: 'bg-pink-50/50 text-sky-900 border-pink-300'
   },
   {
+  id: 'cotton-candy', name: 'Pamuk Şeker',
+  bg: 'bg-pink-950/20', card: 'bg-pink-950/40 text-pink-100',
+  primary: 'bg-pink-600 hover:bg-pink-700 text-white', accent: 'text-pink-300',
+  border: 'border-pink-900/30', input: 'bg-pink-950/50 text-pink-100 border-pink-800'
+},
+  {
     id: 'crimson-blue', name: 'Karmen Mavi',
     bg: 'bg-red-950/40', card: 'bg-red-950/80 text-red-100',
     primary: 'bg-blue-600 hover:bg-blue-700 text-white', accent: 'text-blue-300',
